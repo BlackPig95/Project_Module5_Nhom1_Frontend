@@ -1,8 +1,22 @@
-import { Button } from "antd";
+import { Button, Pagination } from "antd";
 import Search from "antd/es/transfer/search";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllMovies } from "../../../services/adminServices/movieServices";
 
 function MovieDashboard()
 {
+    const dispatch = useDispatch();
+    //Loading = trạng thái load khi đang call api
+    //data = tên biến => .data = Trường có sẵn của axios => Tiếp tục .data = trường tự đặt bên backend => 
+    //.content = trường mặc định của đối tượng pageable bên backend
+    //error = thông báo khi xảy ra lỗi khi gọi api
+    const { loading, data, error } = useSelector(state => state.movie);
+    useEffect(() =>
+    {
+        dispatch(fetchAllMovies());
+    }, []);
+    console.log(data);
     return (
         <div>
             <div className="flex flex-row justify-between">
@@ -24,18 +38,26 @@ function MovieDashboard()
                     </tr>
                 </thead>
                 <tbody className="border border-black">
-                    <tr>
-                        <td className="border border-black">1</td>
-                        <td className="border border-black">Phim 1</td>
-                        <td className="border border-black">Hài</td>
-                        <td className="border border-black">T13</td>
-                        <td className="border border-black">Dường dẫn ảnh</td>
-                        <td className="border border-black"><Button type="primary">Xem chi tiết</Button></td>
-                        <td className="border border-black"><Button className="bg-green-600">Sửa thông tin</Button></td>
-                        <td className="border border-black"><Button danger>Xóa phim</Button></td>
-                    </tr>
+                    { data?.data?.data?.content?.map(movie =>
+                    {
+                        return (
+                            <tr key={ movie.id }>
+                                <td className="border border-black">{ movie.id }</td>
+                                <td className="border border-black">{ movie.title }</td>
+                                <td className="border border-black">{ movie.genres }</td>
+                                <td className="border border-black">{ movie.userAdvice }</td>
+                                <td className="border border-black">{ movie.posterUrl }</td>
+                                <td className="border border-black"><Button type="primary">Xem chi tiết</Button></td>
+                                <td className="border border-black"><Button className="bg-green-600">Sửa thông tin</Button></td>
+                                <td className="border border-black"><Button danger>Xóa phim</Button></td>
+                            </tr>
+                        );
+                    }
+                    ) }
+
                 </tbody>
             </table>
+            <Pagination />
         </div>
     );
 }
