@@ -1,12 +1,42 @@
 import React, { useState } from "react";
 import { MenuOutlined } from "@ant-design/icons";
 import "./index.scss";
+import RegisterForm from "../../../pages/client/register";
+import LoginForm from "../../../pages/client/login";
+import ForgotPasswordForm from "../../../pages/client/forgotPassword";
 
 export default function Header() {
   const [menuVisible, setMenuVisible] = useState(false);
+  const [showLoginForm, setShowLoginForm] = useState(false);
+  const [showRegisterForm, setShowRegisterForm] = useState(false);
+  const [showForgotPasswordForm, setShowForgotPasswordForm] = useState(false);
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
+  };
+
+  const openLoginForm = () => {
+    setShowLoginForm(true);
+    setShowRegisterForm(false);
+    setShowForgotPasswordForm(false);
+  };
+
+  const openRegisterForm = () => {
+    setShowLoginForm(false);
+    setShowRegisterForm(true);
+    setShowForgotPasswordForm(false);
+  };
+
+  const openForgotPasswordForm = () => {
+    setShowLoginForm(false);
+    setShowRegisterForm(false);
+    setShowForgotPasswordForm(true);
+  };
+
+  const closeForm = () => {
+    setShowLoginForm(false);
+    setShowRegisterForm(false);
+    setShowForgotPasswordForm(false);
   };
 
   return (
@@ -41,9 +71,24 @@ export default function Header() {
         </a>
       </nav>
       <div className="header-actions">
-        <button className="register">Đăng ký</button>
-        <button className="login">Đăng nhập</button>
+        <button className="register" onClick={openRegisterForm}>
+          Đăng ký
+        </button>
+        <button className="login" onClick={openLoginForm}>
+          Đăng nhập
+        </button>
       </div>
+      {showLoginForm && (
+        <LoginForm
+          closeForm={closeForm}
+          openRegisterForm={openRegisterForm}
+          openForgotPasswordForm={openForgotPasswordForm}
+        />
+      )}
+      {showRegisterForm && (
+        <RegisterForm closeForm={closeForm} openLoginForm={openLoginForm} />
+      )}
+      {showForgotPasswordForm && <ForgotPasswordForm closeForm={closeForm} />}
     </header>
   );
 }
