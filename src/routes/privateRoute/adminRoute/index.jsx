@@ -1,4 +1,7 @@
 import React from "react";
+import MovieDetailPage from "../../../pages/admin/movieDetail/movieDetail";
+import MovieDashboard from "../../../pages/admin/moviemanagement/MovieDashboard";
+import { useParams } from "react-router-dom";
 
 const Dashboard = React.lazy(() => import("../../../pages/admin/Dashboard"));
 const PaymentManagement = React.lazy(() => import("../../../pages/admin/PaymentManagement"));
@@ -8,7 +11,6 @@ const TicketManagement = React.lazy(() =>
 const UserManagement = React.lazy(() =>
   import("../../../pages/admin/UserManagement")
 );
-
 const privateRoutes = [
   {
     path: "/admin",
@@ -26,6 +28,15 @@ const privateRoutes = [
     path: "/admin/user-management",
     element: <UserManagement />,
   },
+  {
+    path: "/admin/movie-dashboard",
+    element: <MovieDashboard />
+  },
+  {
+    path: "admin/movie-detail/:id",
+    element: <MovieDetailPage />,
+  }
+
 ];
 
 export default privateRoutes;

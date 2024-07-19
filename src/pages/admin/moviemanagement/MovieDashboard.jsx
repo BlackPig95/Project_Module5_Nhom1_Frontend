@@ -5,11 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteMovie, fetchAllMovies } from "../../../services/adminServices/movieServices";
 import FormAddMovie from "../../../components/adminComponents/movie/FormAddMovie";
 import { Pagination } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function MovieDashboard()
 {
     const dispatch = useDispatch();
     const [ page, setPage ] = useState(1);
+    const [ movieDetail, setMovieDetail ] = useState(null);
+    const navigate = useNavigate();
     const handleChangePage = (event, value) =>
     {
         setPage(value);
@@ -22,7 +25,11 @@ function MovieDashboard()
     useEffect(() =>
     {
         dispatch(fetchAllMovies(page));
-    }, [ page ]);
+        if (movieDetail !== null)
+        {
+            navigate(`../admin/movie-detail/${ movieDetail.id }`, { replace: true });
+        }
+    }, [ page, movieDetail ]);
     const pageableData = data?.data?.data;
     // console.log(data);
 
@@ -40,10 +47,12 @@ function MovieDashboard()
     };
     const handleDeleteMovie = (id) =>
     {
-        console.log("Call delete");
         dispatch(deleteMovie(id));
     };
-
+    const handleMovieDetails = (movie) =>
+    {
+        setMovieDetail(movie);
+    };
     return (
         <>
             {/* { console.log("In view " + showAddForm) } */ }
@@ -80,7 +89,7 @@ function MovieDashboard()
                                     <td className="border border-black">{ movie.userAdvice }</td>
                                     <td className="border border-black">{ movie.posterUrl }</td>
                                     <td className="border border-black"><Button type="primary">Xem chi tiết</Button></td>
-                                    <td className="border border-black"><Button className="bg-green-600">Sửa thông tin</Button></td>
+                                    <td className="border border-black"><Button onClick={ () => handleMovieDetails(movie) } className="bg-green-600">Sửa thông tin</Button></td>
                                     <td className="border border-black"><Button danger onClick={ () => handleDeleteMovie(movie.id) }>Xóa phim</Button></td>
                                 </tr>
                             );

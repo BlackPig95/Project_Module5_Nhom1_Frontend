@@ -23,8 +23,14 @@ export const addMovie = createAsyncThunk("movie/addMovie",
 export const deleteMovie = createAsyncThunk("movie/deleteMovie",
     async (id) =>
     {
-        console.log("Call delete method");
         const response = await BASE_URL[ HTTP_METHOD.DELETE ](`admin/movies/${ id }`);
+        return response;
+    }
+);
+export const showMovieDetails = createAsyncThunk("movie/showMovieDetails",
+    async (id) =>
+    {
+        const response = await BASE_URL.get(`admin/movies/${ id }`);
         return response;
     }
 );
