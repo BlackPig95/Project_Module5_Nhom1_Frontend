@@ -3,9 +3,9 @@ import BASE_URL from "../../api";
 import { HTTP_METHOD } from "../../constants";
 
 export const fetchAllMovies = createAsyncThunk("movie/fetchAllMovies",
-    async () =>
+    async (page) =>
     {
-        const response = await BASE_URL[ HTTP_METHOD.GET ]("admin/movies");
+        const response = await BASE_URL[ HTTP_METHOD.GET ](`admin/movies?page=${ page - 1 }`);
         return response;
     }
 );

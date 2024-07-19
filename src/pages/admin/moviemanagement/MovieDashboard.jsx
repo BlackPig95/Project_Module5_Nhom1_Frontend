@@ -1,13 +1,19 @@
-import { Button, Modal, Pagination } from "antd";
+import { Button, Modal } from "antd";
 import Search from "antd/es/transfer/search";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteMovie, fetchAllMovies } from "../../../services/adminServices/movieServices";
 import FormAddMovie from "../../../components/adminComponents/movie/FormAddMovie";
+import { Pagination } from "@mui/material";
 
 function MovieDashboard()
 {
     const dispatch = useDispatch();
+    const [ page, setPage ] = useState(1);
+    const handleChangePage = (event, value) =>
+    {
+        setPage(value);
+    };
     //Loading = trạng thái load khi đang call api
     //data = tên biến => .data = Trường có sẵn của axios => Tiếp tục .data = trường tự đặt bên backend => 
     //.content = trường mặc định của đối tượng pageable bên backend
@@ -15,8 +21,8 @@ function MovieDashboard()
     const { loading, data, error } = useSelector(state => state.movie);
     useEffect(() =>
     {
-        dispatch(fetchAllMovies());
-    }, []);
+        dispatch(fetchAllMovies(page));
+    }, [ page ]);
     const pageableData = data?.data?.data;
     // console.log(data);
 
@@ -37,6 +43,7 @@ function MovieDashboard()
         console.log("Call delete");
         dispatch(deleteMovie(id));
     };
+
     return (
         <>
             {/* { console.log("In view " + showAddForm) } */ }
@@ -81,7 +88,7 @@ function MovieDashboard()
                         ) }
                     </tbody>
                 </table>
-                <Pagination />
+                <Pagination count={ pageableData?.totalPages } color="primary" onChange={ handleChangePage } />
             </div>
         </>
     );
