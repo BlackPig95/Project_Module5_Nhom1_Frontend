@@ -20,3 +20,11 @@ export const addMovie = createAsyncThunk("movie/addMovie",
         return response;
     }
 );
+export const deleteMovie = createAsyncThunk("movie/deleteMovie",
+    async (id) =>
+    {
+        console.log("Call delete method");
+        const response = await BASE_URL[ HTTP_METHOD.DELETE ](`admin/movies/${ id }`);
+        return response;
+    }
+);

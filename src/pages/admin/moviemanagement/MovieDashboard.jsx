@@ -2,7 +2,7 @@ import { Button, Modal, Pagination } from "antd";
 import Search from "antd/es/transfer/search";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllMovies } from "../../../services/adminServices/movieServices";
+import { deleteMovie, fetchAllMovies } from "../../../services/adminServices/movieServices";
 import FormAddMovie from "../../../components/adminComponents/movie/FormAddMovie";
 
 function MovieDashboard()
@@ -27,14 +27,20 @@ function MovieDashboard()
     };
     const handleCloseAddForm = () =>
     {
-        console.log("Before " + showAddForm);
+        // console.log("Before " + showAddForm);
         setShowAddForm(false);
         // dispatch(fetchAllMovies()); Khiến cho không cập nhật được state khi gọi từ component FormAddMovie?
-        console.log("After " + showAddForm);
+        // console.log("After " + showAddForm);
+    };
+    const handleDeleteMovie = (id) =>
+    {
+        console.log("Call delete");
+        dispatch(deleteMovie(id));
     };
     return (
         <>
-            { console.log("In view " + showAddForm) }
+            {/* { console.log("In view " + showAddForm) } */ }
+            { console.log(pageableData?.content) }
             { showAddForm && <Modal className="!w-[50%]" onCancel={ handleCloseAddForm } okButtonProps={ { style: { display: 'none' } } } open={ handleShowAddForm } cancelText="Hủy"
                 title="Thêm phim mới" centered={ true } ><FormAddMovie closeForm={ handleCloseAddForm } /></Modal> }
             <div>
@@ -63,12 +69,12 @@ function MovieDashboard()
                                 <tr key={ movie.id }>
                                     <td className="border border-black">{ movie.id }</td>
                                     <td className="border border-black">{ movie.title }</td>
-                                    <td className="border border-black">{ movie.genres }</td>
+                                    <td className="border border-black">{ movie.genres.name }</td>
                                     <td className="border border-black">{ movie.userAdvice }</td>
                                     <td className="border border-black">{ movie.posterUrl }</td>
                                     <td className="border border-black"><Button type="primary">Xem chi tiết</Button></td>
                                     <td className="border border-black"><Button className="bg-green-600">Sửa thông tin</Button></td>
-                                    <td className="border border-black"><Button danger>Xóa phim</Button></td>
+                                    <td className="border border-black"><Button danger onClick={ () => handleDeleteMovie(movie.id) }>Xóa phim</Button></td>
                                 </tr>
                             );
                         }

@@ -10,10 +10,10 @@ import MovieDetail from './pages/client/movieDetail/MovieDetail.jsx';
 ReactDOM.createRoot(document.getElementById('root')).render(
     <>
         {/* <StrictMode> */ }
-        <Suspense fallback={ <Loading /> }>
-            {/* <RouterProvider router={ routes } /> */ }
-            <App />
-        </Suspense>
+        {/* <Suspense fallback={ <Loading /> }> */ }
+        {/* <RouterProvider router={ routes } /> */ }
+        <App />
+        {/* </Suspense> */ }
         {/* </StrictMode> */ }
     </>
 );
