@@ -1,7 +1,89 @@
-import React from "react";
-// import "./index.scss";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../../../services/authService";
+import { notification } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({ closeForm, openRegisterForm, openForgotPasswordForm }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const validateData = (name, value) => {
+    const errorMessages = {
+      email: {
+        empty: "Email không được để trống",
+      },
+      password: "Mật khẩu không được để trống",
+    };
+
+    const setErrorFunctions = {
+      email: setEmailError,
+      password: setPasswordError,
+    };
+
+    const setErrorFunction = setErrorFunctions[name];
+
+    if (!value) {
+      setErrorFunction(errorMessages[name].empty || errorMessages[name]);
+      return false;
+    }
+
+    setErrorFunction("");
+    return true;
+  };
+
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+
+    setUser({
+      ...user,
+      [name]: value,
+    });
+
+    validateData(name, value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Gọi API đăng nhập tài khoản
+    dispatch(
+      login({
+        email: user.email,
+        password: user.password,
+      })
+    ).then((response) => {
+      console.log(response.payload);
+      const roles = response.payload.roles;
+      console.log(roles);
+      if (roles.some((role) => role === "ADMIN")) {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+
+      notification.success({
+        message: "Thành công",
+        description: "Đăng nhập thành công",
+      });
+      closeForm();
+    });
+    // .catch((err) => {
+    //   // console.log(err);
+    //   notification.error({
+    //     message: "Thất bại",
+    //     description: "Đăng nhập thất bại.",
+    //   });
+    // });
+  };
+
   return (
     <>
       <div
@@ -33,7 +115,7 @@ const LoginForm = ({ closeForm, openRegisterForm, openForgotPasswordForm }) => {
         <div className="overflow-auto">
           <div>
             <div className="space-y-4">
-              <form autoComplete="off">
+              <form autoComplete="off" onSubmit={handleSubmit}>
                 <div className="space-y-2">
                   <label
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -42,7 +124,7 @@ const LoginForm = ({ closeForm, openRegisterForm, openForgotPasswordForm }) => {
                     Email
                   </label>
                   <input
-                    className="flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="text-black flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                     placeholder="Email"
                     autoComplete="off"
                     id=":rm:-form-item"
@@ -50,7 +132,9 @@ const LoginForm = ({ closeForm, openRegisterForm, openForgotPasswordForm }) => {
                     aria-invalid="false"
                     defaultValue=""
                     name="email"
+                    onChange={handleChange}
                   />
+                  {emailError && <p className="text-red-500">{emailError}</p>}
                 </div>
                 <div className="mt-5">
                   <div className="space-y-2">
@@ -61,7 +145,7 @@ const LoginForm = ({ closeForm, openRegisterForm, openForgotPasswordForm }) => {
                       Mật khẩu
                     </label>
                     <input
-                      className="flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="text-black flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                       placeholder="Mật khẩu"
                       autoComplete="off"
                       id=":rn:-form-item"
@@ -70,7 +154,11 @@ const LoginForm = ({ closeForm, openRegisterForm, openForgotPasswordForm }) => {
                       type="password"
                       defaultValue=""
                       name="password"
+                      onChange={handleChange}
                     />
+                    {passwordError && (
+                      <p className="text-red-500">{passwordError}</p>
+                    )}
                   </div>
                 </div>
                 <p

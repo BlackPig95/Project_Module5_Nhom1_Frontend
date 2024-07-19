@@ -1,15 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MenuOutlined } from "@ant-design/icons";
 import "./index.scss";
 import RegisterForm from "../../../pages/client/register";
 import LoginForm from "../../../pages/client/login";
 import ForgotPasswordForm from "../../../pages/client/forgotPassword";
+import { useDispatch, useSelector } from "react-redux";
+import { Button } from "antd";
+import Cookies from "js-cookie";
+import { logout } from "../../../redux/slices/clientSlices/authSlice";
+import { loadUserFromCookie } from "../../../services/authService";
 
 export default function Header() {
   const [menuVisible, setMenuVisible] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [showForgotPasswordForm, setShowForgotPasswordForm] = useState(false);
+  const userData = useSelector((state) => state.auth.data);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      const parsedToken = JSON.parse(token);
+      dispatch(loadUserFromCookie(parsedToken));
+    }
+  }, [dispatch]);
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
@@ -37,6 +52,10 @@ export default function Header() {
     setShowLoginForm(false);
     setShowRegisterForm(false);
     setShowForgotPasswordForm(false);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   return (
@@ -71,12 +90,25 @@ export default function Header() {
         </a>
       </nav>
       <div className="header-actions">
-        <button className="register" onClick={openRegisterForm}>
-          Đăng ký
-        </button>
-        <button className="login" onClick={openLoginForm}>
-          Đăng nhập
-        </button>
+        {userData ? (
+          <>
+            <span className="text-white">
+              Tên đăng nhập: {userData.fullName}
+            </span>
+            <Button onClick={handleLogout} type="primary">
+              Đăng xuất
+            </Button>
+          </>
+        ) : (
+          <>
+            <button className="register" onClick={openRegisterForm}>
+              Đăng ký
+            </button>
+            <button className="login" onClick={openLoginForm}>
+              Đăng nhập
+            </button>
+          </>
+        )}
       </div>
       {showLoginForm && (
         <LoginForm
