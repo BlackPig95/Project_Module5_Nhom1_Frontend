@@ -1,22 +1,21 @@
+import "./App.css";
 
-import './App.css';
-import MovieDashboard from './pages/admin/moviemanagement/MovieDashboard';
-import { Provider } from 'react-redux';
-import store from './redux/store';
+import { RouterProvider } from "react-router-dom";
+import Loading from "./components/clientComponents/Loading";
+import { Suspense } from "react";
+import routes from "./routes";
 
-
-
-export default function App()
-{
+export default function App() {
   return (
     <>
-      {/* <Suspense fallback={<Loading/>}>
+      <Suspense fallback={<Loading />}>
         <RouterProvider router={routes} />
       </Suspense>
-      <MovieDetail /> */}
-      <Provider store={ store }>
-        <MovieDashboard />
-      </Provider>
+
+      {/* <MovieDetail /> */}
+      {/* <Provider store={store}>
+        <Home />
+      </Provider> */}
     </>
   );
 }
