@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import BASE_URL from "../api/client";
-import { POST } from "../constants/httpMethod";
+import BASE_URL from "../../api/client";
+import { POST } from "../../constants/httpMethod";
 import { notification } from "antd";
 import Cookies from "js-cookie";
 export const login = createAsyncThunk("auth/login", async (user) => {

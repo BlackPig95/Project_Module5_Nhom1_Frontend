@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IDLE } from "../../../constants/status";
-import { login, loadUserFromCookie } from "../../../services/authService";
+import {
+  login,
+  loadUserFromCookie,
+} from "../../../services/clientServices/authService";
 import Cookies from "js-cookie";
 const authSlice = createSlice({
   name: "auth",

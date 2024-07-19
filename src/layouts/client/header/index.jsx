@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "antd";
 import Cookies from "js-cookie";
 import { logout } from "../../../redux/slices/clientSlices/authSlice";
-import { loadUserFromCookie } from "../../../services/authService";
+import { loadUserFromCookie } from "../../../services/clientServices/authService";
 
 export default function Header() {
   const [menuVisible, setMenuVisible] = useState(false);

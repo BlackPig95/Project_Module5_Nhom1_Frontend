@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { login } from "../../../services/authService";
+import { login } from "../../../services/clientServices/authService";
 import { notification } from "antd";
 import { useNavigate } from "react-router-dom";
 
