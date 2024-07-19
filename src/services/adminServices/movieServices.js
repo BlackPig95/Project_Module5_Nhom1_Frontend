@@ -34,3 +34,10 @@ export const showMovieDetails = createAsyncThunk("movie/showMovieDetails",
         return response;
     }
 );
+export const searchMovie = createAsyncThunk("movie/searchMovie",
+    async (searchName) =>
+    {
+        const response = await BASE_URL[ HTTP_METHOD.GET ](`admin/movies/name/${ searchName }`);
+        return response;
+    }
+);

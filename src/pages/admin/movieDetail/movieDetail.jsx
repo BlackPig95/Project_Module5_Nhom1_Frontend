@@ -51,10 +51,10 @@ function MovieDetailPage()
                 <p>Trailer của phim: <span>{ movieData?.trailerLink }</span></p>
             </div>
             <div>
-                <p>Quốc gia sản xuất: <span>{ movieData?.country.name }</span></p>
+                <p>Quốc gia sản xuất: <span>{ movieData?.country?.name }</span></p>
             </div>
             <div>
-                <p>Thể loại phim: <span>{ movieData?.genres.map(g => g.name + " | ") }</span></p>
+                <p>Thể loại phim: <span>{ movieData?.genres?.map(g => g?.name + " | ") }</span></p>
             </div>
         </div>
     );

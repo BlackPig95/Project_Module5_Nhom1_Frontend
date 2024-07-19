@@ -2,10 +2,11 @@ import { Button, Modal } from "antd";
 import Search from "antd/es/transfer/search";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteMovie, fetchAllMovies } from "../../../services/adminServices/movieServices";
+import { deleteMovie, fetchAllMovies, searchMovie } from "../../../services/adminServices/movieServices";
 import FormAddMovie from "../../../components/adminComponents/movie/FormAddMovie";
-import { Pagination } from "@mui/material";
+import { FormControl, Pagination, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useDebounce, useDebouncedValue } from "rooks";
 
 function MovieDashboard()
 {
@@ -22,14 +23,7 @@ function MovieDashboard()
     //.content = trường mặc định của đối tượng pageable bên backend
     //error = thông báo khi xảy ra lỗi khi gọi api
     const { loading, data, error } = useSelector(state => state.movie);
-    useEffect(() =>
-    {
-        dispatch(fetchAllMovies(page));
-        if (movieDetail !== null)
-        {
-            navigate(`../admin/movie-detail/${ movieDetail.id }`, { replace: true });
-        }
-    }, [ page, movieDetail ]);
+
     const pageableData = data?.data?.data;
     // console.log(data);
 
@@ -53,10 +47,27 @@ function MovieDashboard()
     {
         setMovieDetail(movie);
     };
+    const [ searchValue, setSearchValue ] = useState("");
+
+    const handleSearch = (e) =>
+    {
+        e.preventDefault();
+        dispatch(searchMovie(searchValue));
+    };
+    useEffect(() =>
+    {
+
+        dispatch(fetchAllMovies(page));
+
+        if (movieDetail !== null)
+        {
+            navigate(`../admin/movie-detail/${ movieDetail.id }`, { replace: true });
+        }
+    }, [ page, movieDetail ]);
     return (
         <>
             {/* { console.log("In view " + showAddForm) } */ }
-            { console.log(pageableData?.content) }
+            {/* { console.log(pageableData?.content) } */ }
             { showAddForm && <Modal className="!w-[50%]" onCancel={ handleCloseAddForm } okButtonProps={ { style: { display: 'none' } } } open={ handleShowAddForm } cancelText="Hủy"
                 title="Thêm phim mới" centered={ true } ><FormAddMovie closeForm={ handleCloseAddForm } /></Modal> }
             <div>
@@ -64,7 +75,11 @@ function MovieDashboard()
                     <h1 className="font-bold">Quản lý danh sách phim</h1>
                     <div className="flex flex-row gap-2">
                         <Button type="primary" onClick={ handleShowAddForm }>Thêm phim mới</Button>
-                        <Search placeholder="Tìm kiếm phim"></Search>
+                        {/* <TextField id="outlined-basic" value={ searchValue } onChange={ e => setSearchValue(e.target.value) }
+                                label="Tìm kiếm phim" variant="outlined" size="small" /> */}
+                        <form onSubmit={ (e) => handleSearch(e) }>
+                            <Search onClick={ handleSearch } onChange={ e => setSearchValue(e.target.value) } placeholder="Tìm kiếm phim" value={ searchValue }></Search>
+                        </form>
                     </div>
                 </div>
                 <table className="w-full border-black border text-center mt-6">
@@ -88,8 +103,8 @@ function MovieDashboard()
                                     <td className="border border-black">{ movie.genres.name }</td>
                                     <td className="border border-black">{ movie.userAdvice }</td>
                                     <td className="border border-black">{ movie.posterUrl }</td>
-                                    <td className="border border-black"><Button type="primary">Xem chi tiết</Button></td>
-                                    <td className="border border-black"><Button onClick={ () => handleMovieDetails(movie) } className="bg-green-600">Sửa thông tin</Button></td>
+                                    <td className="border border-black"><Button onClick={ () => handleMovieDetails(movie) } type="primary">Xem chi tiết</Button></td>
+                                    <td className="border border-black"><Button className="bg-green-600">Sửa thông tin</Button></td>
                                     <td className="border border-black"><Button danger onClick={ () => handleDeleteMovie(movie.id) }>Xóa phim</Button></td>
                                 </tr>
                             );
