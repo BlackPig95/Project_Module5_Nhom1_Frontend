@@ -9,3 +9,14 @@ export const fetchAllMovies = createAsyncThunk("movie/fetchAllMovies",
         return response;
     }
 );
+export const addMovie = createAsyncThunk("movie/addMovie",
+    async (formData) =>
+    {
+        const response = await BASE_URL[ HTTP_METHOD.POST ]("admin/movies", formData, {
+            headers: {
+                'Content-type': 'multipart/form-data'
+            }
+        });
+        return response;
+    }
+);
