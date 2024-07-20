@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import movieSlice from "../slices/adminSlices/movieSlice";
-import authSlice from "../slices/clientSlices/authSlice";
+import rootReducers from "../slices";
 
-const store = configureStore({
-  reducer: { movie: movieSlice, auth: authSlice },
-});
+const store = configureStore(
+    {
+        reducer: rootReducers
+    }
+);
 export default store;

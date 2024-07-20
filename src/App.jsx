@@ -8,14 +8,9 @@ import routes from "./routes";
 export default function App() {
   return (
     <>
-      <Suspense fallback={<Loading />}>
-        <RouterProvider router={routes} />
-      </Suspense>
-
-      {/* <MovieDetail /> */}
-      {/* <Provider store={store}>
-        <Home />
-      </Provider> */}
+      {/* <Provider store={ store }> */ }
+      {/* <MovieDashboard /> */ }
+      {/* </Provider> */ }
     </>
   );
 }
