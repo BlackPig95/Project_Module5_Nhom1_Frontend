@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LOAD_STATUS } from "../../../constants";
-import { addMovie, deleteMovie, fetchAllMovies, searchMovie, showMovieDetails, sortMovie } from "../../../services/adminServices/movieServices";
+import { addMovie, deleteMovie, editMovie, fetchAllMovies, searchMovie, showMovieDetails, sortMovie } from "../../../services/adminServices/movieServices";
 const initialState = {
     loading: LOAD_STATUS.IDLE,
     data: [],
@@ -65,6 +65,16 @@ const movieSlice = createSlice({
         {
             state.loading = LOAD_STATUS.FULLFILLED;
             state.data = action.payload;
+        });
+        builder.addCase(editMovie.fulfilled, (state, action) =>
+        {
+            state.loading = LOAD_STATUS.FULLFILLED;
+            state.data = action.payload;
+        });
+        builder.addCase(editMovie.rejected, (state, action) =>
+        {
+            state.loading = LOAD_STATUS.REJECTED;
+            state.error = action.error.message;
         });
     }
 });

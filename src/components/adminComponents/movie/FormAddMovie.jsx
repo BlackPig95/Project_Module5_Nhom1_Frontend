@@ -1,10 +1,8 @@
-import { Button, DatePicker, Input, InputNumber, Select } from "antd";
-import dayjs from 'dayjs';
+import { Button, Input, Select } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCountries, fetchAllGenres, fetchAllUserAdvices } from "../../../services/generalServices";
-import { addMovie, fetchAllMovies } from "../../../services/adminServices/movieServices";
-//Trạng thái của phim = status sẽ mặc dịnh là true nên không cần gửi lên
+import { addMovie } from "../../../services/adminServices/movieServices";
 
 
 function FormAddMovie({ closeForm })

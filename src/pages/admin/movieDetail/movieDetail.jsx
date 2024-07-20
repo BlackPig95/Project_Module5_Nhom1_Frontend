@@ -9,17 +9,17 @@ function MovieDetailPage()
     const { id } = useParams();
     const dispatch = useDispatch();
     const { data } = useSelector(state => state.movie);
-    const [ cookies, setCookies ] = useCookies("id", id);
-    setCookies("id", id);
+    // const [ cookies, setCookies ] = useCookies("id", id);
+    // setCookies("id", id);
     useEffect(() =>
     {
-        console.log("Before", cookies.id);
+        // console.log("Before", cookies.id);
         dispatch(showMovieDetails(id));
     }, []);
     const movieData = data?.data?.data;
     return (
         <div>
-            { console.log(cookies.id) }
+            {/* { console.log(cookies.id) } */ }
             { console.log(data) }
             { console.log("Movie data", movieData) }
             Thông tin chi tiết phim

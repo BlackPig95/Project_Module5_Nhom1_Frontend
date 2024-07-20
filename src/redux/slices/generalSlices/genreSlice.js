@@ -20,7 +20,6 @@ const genreSlice = createSlice({
         {
             state.loading = LOAD_STATUS.FULLFILLED;
             state.data = action.payload;
-            console.log(action.payload);
         });
         builder.addCase(fetchAllGenres.rejected, (state, action) =>
         {

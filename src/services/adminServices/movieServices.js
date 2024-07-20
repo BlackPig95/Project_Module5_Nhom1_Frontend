@@ -20,6 +20,17 @@ export const addMovie = createAsyncThunk("movie/addMovie",
         return response;
     }
 );
+export const editMovie = createAsyncThunk("movie/editMovie",
+    async ({ formData }) =>
+    {
+        const response = await BASE_URL[ HTTP_METHOD.PUT ]("admin/movies", formData, {
+            headers: {
+                'Content-type': 'multipart/form-data'
+            }
+        });
+        return response;
+    }
+);
 export const deleteMovie = createAsyncThunk("movie/deleteMovie",
     async (id) =>
     {
@@ -30,6 +41,7 @@ export const deleteMovie = createAsyncThunk("movie/deleteMovie",
 export const showMovieDetails = createAsyncThunk("movie/showMovieDetails",
     async (id) =>
     {
+        console.log("Movie detail ", id);
         const response = await BASE_URL.get(`admin/movies/${ id }`);
         return response;
     }

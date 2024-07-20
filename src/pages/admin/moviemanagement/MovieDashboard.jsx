@@ -7,6 +7,7 @@ import FormAddMovie from "../../../components/adminComponents/movie/FormAddMovie
 import { FormControl, Pagination, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDebounce, useDebouncedValue } from "rooks";
+import FormEditMovie from "../../../components/adminComponents/movie/FormEditMovie";
 
 function MovieDashboard()
 {
@@ -48,7 +49,6 @@ function MovieDashboard()
         setMovieDetail(movie);
     };
     const [ searchValue, setSearchValue ] = useState("");
-
     const handleSearch = (e) =>
     {
         e.preventDefault();
@@ -60,22 +60,39 @@ function MovieDashboard()
         setSortOption(e.target.value);
         dispatch(sortMovie(e.target.value));
     };
+    // const [ showEditForm, setShowEditForm ] = useState(false);
+    const [ editMovieId, setEditMovieId ] = useState(null);
+    const handleEditMovie = (movieId) =>
+    {
+        // setShowEditForm(true);
+        setEditMovieId(movieId);
+    };
+    // const handleCloseEditForm = () =>
+    // {
+    //     setShowEditForm(false);
+    // };
     useEffect(() =>
     {
 
         dispatch(fetchAllMovies(page));
-
         if (movieDetail !== null)
         {
             navigate(`../admin/movie-detail/${ movieDetail.id }`, { replace: true });
         }
-    }, [ page, movieDetail ]);
+        if (editMovieId !== null)
+        {
+            navigate(`../admin/movie-edit/${ editMovieId }`, { replace: true });
+        }
+    }, [ page, movieDetail, editMovieId ]);
     return (
         <>
             {/* { console.log("In view " + showAddForm) } */ }
             {/* { console.log(pageableData?.content) } */ }
             { showAddForm && <Modal className="!w-[50%]" onCancel={ handleCloseAddForm } okButtonProps={ { style: { display: 'none' } } } open={ handleShowAddForm } cancelText="Hủy"
                 title="Thêm phim mới" centered={ true } ><FormAddMovie closeForm={ handleCloseAddForm } /></Modal> }
+            {/* { showEditForm && <Modal className="!w-[50%]" onCancel={ handleCloseEditForm } okButtonProps={ { style: { display: 'none' } } } open={ handleEditMovie } cancelText="Hủy"
+                title="Cập nhật thông tin phim" centered={ true }><FormEditMovie movieId={ editMovieId } /> </Modal> } */}
+
             <div>
                 <div className="flex flex-row justify-between">
                     <h1 className="font-bold">Quản lý danh sách phim</h1>
@@ -118,7 +135,7 @@ function MovieDashboard()
                                     <td className="border border-black">{ movie.userAdvice }</td>
                                     <td className="border border-black">{ movie.posterUrl }</td>
                                     <td className="border border-black"><Button onClick={ () => handleMovieDetails(movie) } type="primary">Xem chi tiết</Button></td>
-                                    <td className="border border-black"><Button className="bg-green-600">Sửa thông tin</Button></td>
+                                    <td className="border border-black"><Button onClick={ () => handleEditMovie(movie.id) } className="bg-green-600">Sửa thông tin</Button></td>
                                     <td className="border border-black"><Button danger onClick={ () => handleDeleteMovie(movie.id) }>Xóa phim</Button></td>
                                 </tr>
                             );
