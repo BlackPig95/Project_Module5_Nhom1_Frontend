@@ -41,3 +41,10 @@ export const searchMovie = createAsyncThunk("movie/searchMovie",
         return response;
     }
 );
+export const sortMovie = createAsyncThunk("movie/sortMovie",
+    async (sort) =>
+    {
+        const response = await BASE_URL[ HTTP_METHOD.GET ](`admin/movies?sort=${ sort }`);
+        return response;
+    }
+);

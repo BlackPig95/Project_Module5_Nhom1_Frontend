@@ -2,7 +2,7 @@ import { Button, Modal } from "antd";
 import Search from "antd/es/transfer/search";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteMovie, fetchAllMovies, searchMovie } from "../../../services/adminServices/movieServices";
+import { deleteMovie, fetchAllMovies, searchMovie, sortMovie } from "../../../services/adminServices/movieServices";
 import FormAddMovie from "../../../components/adminComponents/movie/FormAddMovie";
 import { FormControl, Pagination, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -54,6 +54,12 @@ function MovieDashboard()
         e.preventDefault();
         dispatch(searchMovie(searchValue));
     };
+    const [ sortOption, setSortOption ] = useState("id");
+    const handleChangeSort = (e) =>
+    {
+        setSortOption(e.target.value);
+        dispatch(sortMovie(e.target.value));
+    };
     useEffect(() =>
     {
 
@@ -80,6 +86,14 @@ function MovieDashboard()
                         <form onSubmit={ (e) => handleSearch(e) }>
                             <Search onClick={ handleSearch } onChange={ e => setSearchValue(e.target.value) } placeholder="Tìm kiếm phim" value={ searchValue }></Search>
                         </form>
+                        <div>
+                            <label>Sắp xếp theo: </label>
+                            <select value={ sortOption } onChange={ handleChangeSort } className="border border-black ml-4">
+                                <option value={ "id" }>Id</option>
+                                <option value={ "title" }>Tên</option>
+                                <option value={ "userAdvice" }>Phân loại</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <table className="w-full border-black border text-center mt-6">
