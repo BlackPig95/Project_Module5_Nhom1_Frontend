@@ -1,8 +1,7 @@
-import { Outlet } from "react-router-dom";
-import DashBoard from "../pages/dashboard";
-import Header from "./header";
+import DashBoard from "../../../pages/admin/dashboard";
+import HeaderAdmin from "../header";
+import Menu from "../menu";
 import "./index.scss";
-import Menu from "./menu";
 
 export default function LayoutIndex() {
   return (
@@ -10,8 +9,8 @@ export default function LayoutIndex() {
       <div className="ra-admin-layout">
         <Menu />
         <div className="right">
-          <Header />
-          <Outlet />
+          <HeaderAdmin />
+          <DashBoard />
         </div>
       </div>
     </>

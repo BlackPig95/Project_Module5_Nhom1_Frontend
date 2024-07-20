@@ -1,7 +1,7 @@
 import { UnorderedListOutlined } from "@ant-design/icons";
 import "./index.scss";
 
-export default function Header() {
+export default function HeaderAdmin() {
   return (
     <>
       <header className="ra-admin-header">
@@ -9,7 +9,7 @@ export default function Header() {
           <UnorderedListOutlined />
         </div>
         <div className="right">
-          <span>Ngọ Văn Quý</span>
+          <span>Giang</span>
         </div>
       </header>
     </>
