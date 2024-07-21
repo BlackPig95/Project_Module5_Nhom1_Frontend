@@ -4,10 +4,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteMovie, fetchAllMovies, searchMovie, sortMovie } from "../../../services/adminServices/movieServices";
 import FormAddMovie from "../../../components/adminComponents/movie/FormAddMovie";
-import { FormControl, Pagination, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useDebounce, useDebouncedValue } from "rooks";
-import FormEditMovie from "../../../components/adminComponents/movie/FormEditMovie";
+import { Pagination } from "@mui/material";
+import { useDebounce } from "rooks";
 
 function MovieDashboard()
 {
@@ -49,6 +48,7 @@ function MovieDashboard()
         setMovieDetail(movie);
     };
     const [ searchValue, setSearchValue ] = useState("");
+    const setValueDebounced = useDebounce(setSearchValue, 500);
     const handleSearch = (e) =>
     {
         e.preventDefault();
@@ -73,8 +73,7 @@ function MovieDashboard()
     // };
     useEffect(() =>
     {
-
-        dispatch(fetchAllMovies(page));
+        dispatch(fetchAllMovies({ page, sortOption, searchValue }));
         if (movieDetail !== null)
         {
             navigate(`../admin/movie-detail/${ movieDetail.id }`, { replace: true });
@@ -83,7 +82,7 @@ function MovieDashboard()
         {
             navigate(`../admin/movie-edit/${ editMovieId }`, { replace: true });
         }
-    }, [ page, movieDetail, editMovieId ]);
+    }, [ page, movieDetail, editMovieId, searchValue ]);
     return (
         <>
             {/* { console.log("In view " + showAddForm) } */ }
@@ -101,7 +100,7 @@ function MovieDashboard()
                         {/* <TextField id="outlined-basic" value={ searchValue } onChange={ e => setSearchValue(e.target.value) }
                                 label="Tìm kiếm phim" variant="outlined" size="small" /> */}
                         <form onSubmit={ (e) => handleSearch(e) }>
-                            <Search onClick={ handleSearch } onChange={ e => setSearchValue(e.target.value) } placeholder="Tìm kiếm phim" value={ searchValue }></Search>
+                            <Search onClick={ handleSearch } onChange={ e => setValueDebounced(e.target.value) } placeholder="Tìm kiếm phim"></Search>
                         </form>
                         <div>
                             <label>Sắp xếp theo: </label>
