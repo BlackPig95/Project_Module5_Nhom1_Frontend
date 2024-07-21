@@ -1,7 +1,125 @@
-import React from "react";
-// import "./index.scss";
+import React, { useState } from "react";
+import { notification } from "antd";
+import { validateEmail } from "../../../util/validateData";
+import { STATUS_CODE } from "../../../constants";
+import BASE_URL from "../../../api";
 
 const RegisterForm = ({ closeForm, openLoginForm }) => {
+  const [user, setUser] = useState({
+    fullName: "",
+    username: "",
+    phone: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [errors, setErrors] = useState({
+    fullName: "",
+    username: "",
+    phone: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const validateData = (name, value) => {
+    const errorMessages = {
+      fullName: "Họ và tên không được để trống",
+      username: "Tên tài khoản không được để trống",
+      phone: "Số điện thoại không được để trống",
+      email: {
+        empty: "Email không được để trống",
+        inValid: "Email không đúng định dạng",
+      },
+      password: "Mật khẩu không được để trống",
+      confirmPassword: "Xác nhận mật khẩu không được để trống",
+    };
+
+    if (!value) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: errorMessages[name]?.empty || errorMessages[name],
+      }));
+      return false;
+    }
+
+    if (name === "email" && !validateEmail(value)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        email: errorMessages.email.inValid,
+      }));
+      return false;
+    }
+
+    if (name === "confirmPassword" && value !== user.password) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        confirmPassword: "Mật khẩu và xác nhận mật khẩu không khớp",
+      }));
+      return false;
+    }
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
+    return true;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUser((prevUser) => ({
+      ...prevUser,
+      [name]: value,
+    }));
+    validateData(name, value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const isValid = Object.keys(user).every((key) =>
+      validateData(key, user[key])
+    );
+
+    if (isValid) {
+      try {
+        const response = await BASE_URL.post("/auth/register", user);
+        if (response.status === STATUS_CODE.CREATED) {
+          notification.success({
+            message: "Thông báo",
+            description: "Đăng ký tài khoản thành công",
+          });
+          openLoginForm();
+        }
+      } catch (error) {
+        const statusCode = error?.response?.status;
+        switch (statusCode) {
+          case STATUS_CODE.BAD_REQUEST:
+            notification.error({
+              message: "Cảnh báo",
+              description: Object.values(error?.response.data)[0],
+            });
+            break;
+          case STATUS_CODE.ERROR:
+            notification.error({
+              message: "Cảnh báo",
+              description:
+                "Đã có lỗi xảy ra. Vui lòng liên hệ với quản trị viên để được trợ giúp.",
+            });
+            break;
+          default:
+            notification.error({
+              message: "Cảnh báo",
+              description: "Lỗi hệ thống.",
+            });
+            break;
+        }
+      }
+    }
+  };
+
   return (
     <>
       <div
@@ -33,188 +151,173 @@ const RegisterForm = ({ closeForm, openLoginForm }) => {
         <div className="overflow-auto">
           <div>
             <div className="space-y-4">
-              <form className="overflow-y-auto">
-                <div className="flex items-center gap-5">
-                  <div className="space-y-2 w-full">
-                    <label
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      htmlFor=":rm:-form-item"
-                    >
-                      Họ
-                    </label>
-                    <input
-                      className="flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="Họ"
-                      id=":rm:-form-item"
-                      aria-describedby=":rm:-form-item-description"
-                      aria-invalid="false"
-                      defaultValue=""
-                      name="FirstName"
-                    />
-                  </div>
-                  <div className="space-y-2 w-full">
-                    <label
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      htmlFor=":rn:-form-item"
-                    >
-                      Tên
-                    </label>
-                    <input
-                      className="flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="Tên"
-                      autoComplete="off"
-                      id=":rn:-form-item"
-                      aria-describedby=":rn:-form-item-description"
-                      aria-invalid="false"
-                      defaultValue=""
-                      name="LastName"
-                    />
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <div className="space-y-2 w-full">
-                    <label
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      htmlFor=":ro:-form-item"
-                    >
-                      Tên tài khoản
-                    </label>
-                    <input
-                      className="flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="Tên tài khoản"
-                      autoComplete="off"
-                      id=":ro:-form-item"
-                      aria-describedby=":ro:-form-item-description"
-                      aria-invalid="false"
-                      defaultValue=""
-                      name="Username"
-                    />
-                  </div>
-                </div>
-                <div className="flex items-center gap-5 mt-5">
-                  <div className="space-y-2 w-full">
-                    <label
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      htmlFor=":rp:-form-item"
-                    >
-                      Số điện thoại
-                    </label>
-                    <input
-                      className="flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="Số điện thoại"
-                      autoComplete="off"
-                      id=":rp:-form-item"
-                      aria-describedby=":rp:-form-item-description"
-                      aria-invalid="false"
-                      defaultValue=""
-                      name="Mobile"
-                    />
-                  </div>
-                  <div className="space-y-2 w-full">
-                    <label
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      htmlFor=":rq:-form-item"
-                    >
-                      Email
-                    </label>
-                    <input
-                      className="flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="Email"
-                      autoComplete="off"
-                      id=":rq:-form-item"
-                      aria-describedby=":rq:-form-item-description"
-                      aria-invalid="false"
-                      defaultValue=""
-                      name="Email"
-                    />
-                  </div>
-                </div>
-                <div className="mt-5 flex items-center gap-5">
-                  <div className="space-y-2 w-full">
-                    <label
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      htmlFor=":rr:-form-item"
-                    >
-                      Mật khẩu
-                    </label>
-                    <input
-                      className="flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="Mật khẩu"
-                      autoComplete="off"
-                      id=":rr:-form-item"
-                      aria-describedby=":rr:-form-item-description"
-                      aria-invalid="false"
-                      type="password"
-                      defaultValue=""
-                      name="Password"
-                    />
-                  </div>
-                  <div className="space-y-2 w-full">
-                    <label
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      htmlFor=":rs:-form-item"
-                    >
-                      Xác nhận mật khẩu
-                    </label>
-                    <input
-                      className="flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="Xác nhận mật khẩu"
-                      autoComplete="off"
-                      id=":rs:-form-item"
-                      aria-describedby=":rs:-form-item-description"
-                      aria-invalid="false"
-                      type="password"
-                      defaultValue=""
-                      name="ConfirmPassword"
-                    />
-                  </div>
-                </div>
-                <div className="mt-8 w-full">
-                  <button
-                    style={{
-                      background:
-                        "linear-gradient(90deg, #ff0000 0%, #ff5657 100%)",
-                    }}
-                    className="hover:[linear-gradient(90deg, #ff5657  0%, #ff0000  100%)] inline-flex items-center justify-center rounded-full text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-danger text-destructive-foreground hover:bg-blue-500 h-10 px-8 py-2 w-full"
-                    type="submit"
+              <form className="overflow-y-auto" onSubmit={handleSubmit}>
+                <div className="space-y-2 w-full">
+                  <label
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    htmlFor="fullName"
                   >
-                    Đăng ký
-                  </button>
+                    Họ và tên
+                  </label>
+                  <input
+                    className="text-black flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    placeholder="Họ và tên"
+                    id="fullName"
+                    aria-describedby="fullName-description"
+                    aria-invalid="false"
+                    value={user.fullName}
+                    name="fullName"
+                    onChange={handleChange}
+                  />
+                  {errors.fullName && (
+                    <p className="text-red-500 text-sm">{errors.fullName}</p>
+                  )}
                 </div>
-                <p className="mt-8 text-center text-sm">
-                  Bạn đã có tài khoản?{" "}
-                  <a
-                    className="text-red-500 hover:underline cursor-pointer"
-                    onClick={openLoginForm}
+                <div className="space-y-2 w-full">
+                  <label
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    htmlFor="username"
                   >
-                    Đăng nhập
-                  </a>
-                </p>
+                    Tên tài khoản
+                  </label>
+                  <input
+                    className="text-black flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    placeholder="Tên tài khoản"
+                    autoComplete="off"
+                    id="username"
+                    aria-describedby="username-description"
+                    aria-invalid="false"
+                    value={user.username}
+                    name="username"
+                    onChange={handleChange}
+                  />
+                  {errors.username && (
+                    <p className="text-red-500 text-sm">{errors.username}</p>
+                  )}
+                </div>
+                <div className="space-y-2 w-full">
+                  <label
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    htmlFor="phone"
+                  >
+                    Số điện thoại
+                  </label>
+                  <input
+                    className="text-black flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    placeholder="Số điện thoại"
+                    autoComplete="off"
+                    id="phone"
+                    aria-describedby="mobile-description"
+                    aria-invalid="false"
+                    value={user.phone}
+                    name="phone"
+                    onChange={handleChange}
+                  />
+                  {errors.phone && (
+                    <p className="text-red-500 text-sm">{errors.phone}</p>
+                  )}
+                </div>
+                <div className="space-y-2 w-full">
+                  <label
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    htmlFor="email"
+                  >
+                    Email
+                  </label>
+                  <input
+                    className="text-black flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    placeholder="Email"
+                    autoComplete="off"
+                    id="email"
+                    aria-describedby="email-description"
+                    aria-invalid="false"
+                    value={user.email}
+                    name="email"
+                    onChange={handleChange}
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-sm">{errors.email}</p>
+                  )}
+                </div>
+                <div className="space-y-2 w-full">
+                  <label
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    htmlFor="password"
+                  >
+                    Mật khẩu
+                  </label>
+                  <input
+                    className="text-black flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    placeholder="Mật khẩu"
+                    autoComplete="off"
+                    id="password"
+                    aria-describedby="password-description"
+                    aria-invalid="false"
+                    type="password"
+                    value={user.password}
+                    name="password"
+                    onChange={handleChange}
+                  />
+                  {errors.password && (
+                    <p className="text-red-500 text-sm">{errors.password}</p>
+                  )}
+                </div>
+                <div className="space-y-2 w-full">
+                  <label
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    htmlFor="confirmPassword"
+                  >
+                    Xác nhận mật khẩu
+                  </label>
+                  <input
+                    className="text-black flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    placeholder="Xác nhận mật khẩu"
+                    autoComplete="off"
+                    id="confirmPassword"
+                    aria-describedby="confirmPassword-description"
+                    aria-invalid="false"
+                    type="password"
+                    value={user.confirmPassword}
+                    name="confirmPassword"
+                    onChange={handleChange}
+                  />
+                  {errors.confirmPassword && (
+                    <p className="text-red-500 text-sm">
+                      {errors.confirmPassword}
+                    </p>
+                  )}
+                </div>
+                <button
+                  className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+                  type="submit"
+                >
+                  Đăng ký
+                </button>
               </form>
             </div>
           </div>
         </div>
         <button
           type="button"
-          className="absolute right-6 top-6 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+          className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
+          data-state="open"
+          aria-label="Close"
           onClick={closeForm}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width={24}
-            height={24}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
             className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
           >
-            <path d="M18 6 6 18" />
-            <path d="m6 6 12 12" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
-          <span className="sr-only">Close</span>
         </button>
       </div>
     </>

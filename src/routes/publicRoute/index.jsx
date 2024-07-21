@@ -31,6 +31,7 @@ const publicRoutes = [
     path: "/ticket-price",
     element: <TicketPrice />,
   },
+
   {
     path: "*",
     element: <PageNotFound />,
