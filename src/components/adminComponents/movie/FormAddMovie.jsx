@@ -154,14 +154,29 @@ function FormAddMovie({ closeForm })
   const handleUserAdvice = (e) =>
   {
     setUserAdviceState(e);
+    setMovie(
+      {
+        ...movie,
+        userAdvice: e,
+      });
   };
   const handleCountryChange = (e) =>
   {
     setCountryState(e);
+    setMovie(
+      {
+        ...movie,
+        countryName: e,
+      });
   };
   const handleGenreChange = (e) =>
   {
     setGenreState(e);
+    setMovie(
+      {
+        ...movie,
+        genres: e,
+      });
   };
   const handleSubmit = (e) =>
   {
