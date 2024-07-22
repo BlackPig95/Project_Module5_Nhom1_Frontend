@@ -9,3 +9,16 @@ export const fetchAllRooms = createAsyncThunk("room/fetchAllRooms",
         return response;
     }
 );
+export const addRoom = createAsyncThunk("room/addRoom",
+    async (roomToAdd) =>
+    {
+        const response = await BASE_URL[ HTTP_METHOD.POST ]("admin/rooms", roomToAdd,
+            {
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            }
+        );
+        return response;
+    }
+);
