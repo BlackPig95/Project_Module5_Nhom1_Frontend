@@ -100,11 +100,10 @@ function MovieDashboard()
             { console.log("In view " + showAddForm) }
             { console.log(pageableData) }
             {/* { console.log(pageableData?.content) } */ }
-            { showAddForm && <Modal className="!w-[50%]" onCancel={ handleCloseAddForm } okButtonProps={ { style: { display: 'none' } } } open={ handleShowAddForm } cancelText="Hủy"
+            { showAddForm && <Modal maskClosable={ false } className="!w-[50%]" onCancel={ handleCloseAddForm } okButtonProps={ { style: { display: 'none' } } } open={ handleShowAddForm } cancelText="Hủy"
                 title="Thêm phim mới" centered={ true } ><FormAddMovie closeForm={ handleCloseAddForm } /></Modal> }
             {/* { showEditForm && <Modal className="!w-[50%]" onCancel={ handleCloseEditForm } okButtonProps={ { style: { display: 'none' } } } open={ handleEditMovie } cancelText="Hủy"
                 title="Cập nhật thông tin phim" centered={ true }><FormEditMovie movieId={ editMovieId } /> </Modal> } */}
-
             <div>
                 <div className="flex flex-row justify-between">
                     <h1 className="font-bold">Quản lý danh sách phim</h1>
