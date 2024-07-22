@@ -1,4 +1,4 @@
-import DashBoard from "../../../pages/admin/dashboard";
+import UserManagement from "../../../pages/admin/usermanagement/UserManagement";
 import HeaderAdmin from "../header";
 import Menu from "../menu";
 import "./index.scss";
@@ -10,7 +10,7 @@ export default function LayoutIndex() {
         <Menu />
         <div className="right">
           <HeaderAdmin />
-          <DashBoard />
+          <UserManagement />
         </div>
       </div>
     </>

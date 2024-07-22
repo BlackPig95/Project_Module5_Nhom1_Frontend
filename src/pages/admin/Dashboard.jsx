@@ -1,4 +1,9 @@
+import LayoutIndex from "../../layouts/admin/layoutIndex";
 
 export default function Dashboard() {
-  return <>Admin Dashboard</>;
+  return (
+    <>
+      <LayoutIndex />
+    </>
+  );
 }

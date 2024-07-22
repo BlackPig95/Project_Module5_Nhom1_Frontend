@@ -5,12 +5,14 @@ import { useParams } from "react-router-dom";
 import FormEditMovie from "../../../components/adminComponents/movie/FormEditMovie";
 
 const Dashboard = React.lazy(() => import("../../../pages/admin/Dashboard"));
-const PaymentManagement = React.lazy(() => import("../../../pages/admin/PaymentManagement"));
+const PaymentManagement = React.lazy(() =>
+  import("../../../pages/admin/PaymentManagement")
+);
 const TicketManagement = React.lazy(() =>
   import("../../../pages/admin/TicketManagement")
 );
 const UserManagement = React.lazy(() =>
-  import("../../../pages/admin/UserManagement")
+  import("../../../pages/admin/usermanagement/UserManagement")
 );
 const privateRoutes = [
   {
@@ -25,13 +27,10 @@ const privateRoutes = [
     path: "/admin/ticket-management",
     element: <TicketManagement />,
   },
-  {
-    path: "/admin/user-management",
-    element: <UserManagement />,
-  },
+
   {
     path: "/admin/movie-dashboard",
-    element: <MovieDashboard />
+    element: <MovieDashboard />,
   },
   {
     path: "admin/movie-detail/:id",
@@ -39,8 +38,8 @@ const privateRoutes = [
   },
   {
     path: "admin/movie-edit/:id",
-    element: <FormEditMovie />
-  }
+    element: <FormEditMovie />,
+  },
 ];
 
 export default privateRoutes;

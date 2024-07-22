@@ -6,7 +6,7 @@ import LoginForm from "../../../pages/client/login";
 import ForgotPasswordForm from "../../../pages/client/forgotPassword";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "antd";
-import Cookies from "js-cookie";
+import Cookies from "js-cookie"; // Sử dụng js-cookie
 import { logout } from "../../../redux/slices/clientSlices/authSlice";
 import { loadUserFromCookie } from "../../../services/clientServices/authService";
 
@@ -15,11 +15,11 @@ export default function Header() {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [showForgotPasswordForm, setShowForgotPasswordForm] = useState(false);
-  const userData = useSelector((state) => state.auth.data);
+  const userData = useSelector((state) => state.auth?.data);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = Cookies.get("token");
+    const token = Cookies.get("token"); // Sử dụng js-cookie
     if (token) {
       const parsedToken = JSON.parse(token);
       dispatch(loadUserFromCookie(parsedToken));
@@ -92,7 +92,7 @@ export default function Header() {
       <div className="header-actions">
         {userData ? (
           <>
-            <span className="text-white">
+            <span className="text-black">
               Tên đăng nhập: {userData.fullName}
             </span>
             <Button onClick={handleLogout} type="primary">
