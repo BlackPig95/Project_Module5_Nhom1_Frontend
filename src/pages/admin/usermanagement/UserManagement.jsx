@@ -13,9 +13,13 @@ import {
   TextField,
 } from "@mui/material";
 import { LOAD_STATUS } from "../../../constants";
-import { fetchAllUsers } from "../../../services/adminServices/userServices";
+import {
+  fetchAllUsers,
+  updateUserStatus,
+} from "../../../services/adminServices/userServices";
 import "./index.scss";
 import Button from "@mui/material/Button";
+
 export default function UserManagement() {
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.user);
@@ -32,6 +36,10 @@ export default function UserManagement() {
 
   const handleChangeSearch = (e) => {
     setSearch(e.target.value);
+  };
+
+  const handleStatusToggle = (userId) => {
+    dispatch(updateUserStatus(userId));
   };
 
   return (
@@ -74,7 +82,12 @@ export default function UserManagement() {
                       {user.status ? "Active" : "Inactive"}
                     </TableCell>
                     <TableCell align="center">
-                      <Button variant="contained">Status</Button>
+                      <Button
+                        variant="contained"
+                        onClick={() => handleStatusToggle(user.id)}
+                      >
+                        Status
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}

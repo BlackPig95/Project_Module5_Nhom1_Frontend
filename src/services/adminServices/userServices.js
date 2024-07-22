@@ -22,3 +22,25 @@ export const fetchAllUsers = createAsyncThunk(
     return response.data;
   }
 );
+
+export const updateUserStatus = createAsyncThunk(
+  "user/updateUserStatus",
+  async (userId) => {
+    const token = Cookies.get("token");
+    if (!token) {
+      throw new Error("Token not found");
+    }
+
+    await BASE_URL[HTTP_METHOD.PUT](
+      `/admin/user-management/${userId}/status`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return userId;
+  }
+);

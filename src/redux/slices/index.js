@@ -4,6 +4,7 @@ import countrySlice from "./generalSlices/countrySlice";
 import genreSlice from "./generalSlices/genreSlice";
 import userAdviceSlice from "./generalSlices/userAdviceSlice";
 import userSlice from "./adminSlices/userSlice";
+import discountSlice from "./adminSlices/discountSlice";
 
 const rootReducers = combineReducers({
   movie: movieSlice,
@@ -11,5 +12,6 @@ const rootReducers = combineReducers({
   genre: genreSlice,
   userAdvice: userAdviceSlice,
   user: userSlice,
+  discount: discountSlice,
 });
 export default rootReducers;
