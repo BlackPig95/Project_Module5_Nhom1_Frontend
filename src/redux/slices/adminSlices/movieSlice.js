@@ -26,7 +26,7 @@ const movieSlice = createSlice({
             state.loading = LOAD_STATUS.REJECTED;
             state.error = action.error.message;
         });
-        builder.addCase(addMovie.fulfilled, (state, action) =>
+        builder.addCase(addMovie.fulfilled, async (state, action) =>
         {
             state.loading = LOAD_STATUS.FULLFILLED;
             state.data = action.payload;

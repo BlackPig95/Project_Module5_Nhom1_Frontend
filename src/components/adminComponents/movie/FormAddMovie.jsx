@@ -207,7 +207,7 @@ function FormAddMovie({ closeForm })
     {
       return;
     }
-    dispatch(addMovie(formData));
+    dispatch(addMovie(formData)).then(closeForm());
   };
 
   const countryData = useSelector(state => state.country);
@@ -251,6 +251,10 @@ function FormAddMovie({ closeForm })
     userAdviceOptions.push({ value: a });
   }
   );
+  // const handleCloseForm = () =>
+  // {
+  //   closeForm();
+  // };
   return (
     <div>
       <form className="flex flex-col gap-4 w-full" onSubmit={ handleSubmit }>

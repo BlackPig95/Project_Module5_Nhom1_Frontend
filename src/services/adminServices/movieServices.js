@@ -47,9 +47,9 @@ export const showMovieDetails = createAsyncThunk("movie/showMovieDetails",
     }
 );
 export const searchMovie = createAsyncThunk("movie/searchMovie",
-    async (searchName) =>
+    async ({ searchValue, sortOption, page }) =>
     {
-        const response = await BASE_URL[ HTTP_METHOD.GET ](`admin/movies/name/${ searchName }`);
+        const response = await BASE_URL[ HTTP_METHOD.GET ](`admin/movies/name/${ searchValue }?sort=${ sortOption }&page=${ page - 1 }`);
         return response;
     }
 );
