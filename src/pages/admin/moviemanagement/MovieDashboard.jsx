@@ -39,10 +39,10 @@ function MovieDashboard()
     };
     const handleCloseAddForm = () =>
     {
-        console.log("Before " + showAddForm);
+        // console.log("Before " + showAddForm);
         setShowAddForm(false);
         dispatch(fetchAllMovies({ page, sortOption, searchValue }));  //Khiến cho không cập nhật được state khi gọi từ component FormAddMovie?
-        console.log("After " + showAddForm);
+        // console.log("After " + showAddForm);
     };
     const [ deletedMovieId, setDeletedMovieId ] = useState(null);
     const handleDeleteMovie = (id) =>
