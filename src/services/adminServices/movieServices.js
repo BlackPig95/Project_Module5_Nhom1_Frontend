@@ -21,7 +21,7 @@ export const addMovie = createAsyncThunk("movie/addMovie",
     }
 );
 export const editMovie = createAsyncThunk("movie/editMovie",
-    async ({ formData }) =>
+    async (formData) =>
     {
         const response = await BASE_URL[ HTTP_METHOD.PUT ]("admin/movies", formData, {
             headers: {

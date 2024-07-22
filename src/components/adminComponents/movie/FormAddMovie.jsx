@@ -201,7 +201,7 @@ function FormAddMovie({ closeForm })
     for (let i = 0; i < Object.keys(movie).length; i++)
     {
       formData.append(Object.keys(movie)[ i ], Object.values(movie)[ i ]);
-      console.log(Object.keys(movie)[ i ] + " " + Object.values(movie)[ i ]);
+      // console.log(typeof Object.keys(movie)[ i ] + " | " + Object.keys(movie)[ i ] + " | " + Object.values(movie)[ i ]);
     }
     if (errors.length > 0)
     {
@@ -257,6 +257,7 @@ function FormAddMovie({ closeForm })
   // };
   return (
     <div>
+      { console.log(movie) }
       <form className="flex flex-col gap-4 w-full" onSubmit={ handleSubmit }>
         <div>
           <label htmlFor="">Tên phim</label>
