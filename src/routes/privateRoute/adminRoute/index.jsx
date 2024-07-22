@@ -1,0 +1,50 @@
+import React from "react";
+import MovieDetailPage from "../../../pages/admin/movieDetail/movieDetail";
+import MovieDashboard from "../../../pages/admin/moviemanagement/MovieDashboard";
+import { useParams } from "react-router-dom";
+import FormEditMovie from "../../../components/adminComponents/movie/FormEditMovie";
+import SeatManagement from "../../../pages/admin/SeatManagement";
+
+const Dashboard = React.lazy(() => import("../../../pages/admin/Dashboard"));
+const PaymentManagement = React.lazy(() =>
+  import("../../../pages/admin/PaymentManagement")
+);
+const TicketManagement = React.lazy(() =>
+  import("../../../pages/admin/TicketManagement")
+);
+const UserManagement = React.lazy(() =>
+  import("../../../pages/admin/usermanagement/UserManagement")
+);
+const privateRoutes = [
+  {
+    path: "/admin",
+    element: <Dashboard />,
+  },
+  {
+    path: "/admin/payment-management",
+    element: <PaymentManagement />,
+  },
+  {
+    path: "/admin/seat-management",
+    element: <SeatManagement />,
+  },
+  {
+    path: "/admin/ticket-management",
+    element: <TicketManagement />,
+  },
+
+  {
+    path: "/admin/movie-dashboard",
+    element: <MovieDashboard />,
+  },
+  {
+    path: "admin/movie-detail/:id",
+    element: <MovieDetailPage />,
+  },
+  {
+    path: "admin/movie-edit/:id",
+    element: <FormEditMovie />,
+  },
+];
+
+export default privateRoutes;
