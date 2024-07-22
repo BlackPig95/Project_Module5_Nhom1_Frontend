@@ -2,7 +2,7 @@ import { Pagination } from "@mui/material";
 import { Button, Modal } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllRooms } from "../../../services/adminServices/roomService";
+import { deleteRoom, fetchAllRooms } from "../../../services/adminServices/roomService";
 import Search from "antd/es/input/Search";
 import FormAddRoom from "../../../components/adminComponents/movie/FormAddRoom";
 
@@ -13,6 +13,7 @@ function RoomManagement()
     const { data } = useSelector(state => state.room);
     const roomPageableData = data?.data?.data;
     const [ showAddForm, setShowAddForm ] = useState(false);
+    const [ roomDeleted, setRoomDeleted ] = useState(null);
     const handleShowAddForm = () =>
     {
         setShowAddForm(true);
@@ -26,10 +27,20 @@ function RoomManagement()
     {
         setShowAddForm(false);
     };
+    const handleEditRoom = (roomId) =>
+    {
+
+    };
+    const handleDeleteRoom = (roomId) =>
+    {
+        dispatch(deleteRoom(roomId));
+        setRoomDeleted(roomId);
+    };
     useEffect(() =>
     {
         dispatch(fetchAllRooms({ page }));
-    }, [ page, showAddForm ]);
+    }, [ page, showAddForm, roomDeleted ]);
+
     return (
         <>
             { showAddForm && <Modal maskClosable={ false } className="!w-[50%]" onCancel={ handleCloseAddForm } okButtonProps={ { style: { display: 'none' } } } open={ handleShowAddForm } cancelText="Hủy"
@@ -66,13 +77,13 @@ function RoomManagement()
                     <tbody className="border border-black">
                         { roomPageableData?.content.map(room =>
                         {
-                            return (<tr>
+                            return (<tr key={ room.id }>
                                 <td className="border border-black">{ room.id }</td>
                                 <td className="border border-black">{ room.name }</td>
                                 <td className="border border-black">{ room.capacity }</td>
                                 <td className="border border-black">{ room.status ? "Đang hoạt động" : "Ngừng hoạt động" }</td>
-                                <td className="border border-black"><Button onClick={ () => handleEditMovie(movie.id) } className="bg-green-600">Sửa thông tin</Button></td>
-                                <td className="border border-black"><Button danger onClick={ () => handleDeleteMovie(movie.id) }>Xóa phim</Button></td>
+                                <td className="border border-black"><Button onClick={ () => handleEditRoom(room.id) } className="bg-green-600">Sửa thông tin</Button></td>
+                                <td className="border border-black"><Button danger onClick={ () => handleDeleteRoom(room.id) }>Xóa phim</Button></td>
                             </tr>);
                         }) }
                     </tbody>

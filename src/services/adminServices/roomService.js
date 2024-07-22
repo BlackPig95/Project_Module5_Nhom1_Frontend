@@ -22,3 +22,10 @@ export const addRoom = createAsyncThunk("room/addRoom",
         return response;
     }
 );
+export const deleteRoom = createAsyncThunk("room/deleteRoom",
+    async (roomId) =>
+    {
+        const response = await BASE_URL[ HTTP_METHOD.DELETE ](`admin/rooms/${ roomId }`);
+        return response;
+    }
+);

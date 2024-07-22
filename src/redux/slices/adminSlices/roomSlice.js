@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LOAD_STATUS } from "../../../constants";
-import { addRoom, fetchAllRooms } from "../../../services/adminServices/roomService";
+import { addRoom, deleteRoom, fetchAllRooms } from "../../../services/adminServices/roomService";
 
 const initialState = {
     loading: LOAD_STATUS.IDLE,
@@ -34,6 +34,16 @@ const roomSlice = createSlice({
             state.data = action.payload;
         });
         builder.addCase(addRoom.rejected, (state, action) =>
+        {
+            state.loading = LOAD_STATUS.REJECTED;
+            state.error = action.error.message;
+        });
+        builder.addCase(deleteRoom.fulfilled, async (state, action) =>
+        {
+            state.loading = LOAD_STATUS.FULLFILLED;
+            state.data = action.payload;
+        });
+        builder.addCase(deleteRoom.rejected, (state, action) =>
         {
             state.loading = LOAD_STATUS.REJECTED;
             state.error = action.error.message;
