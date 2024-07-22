@@ -5,12 +5,16 @@ import genreSlice from "./generalSlices/genreSlice";
 import userAdviceSlice from "./generalSlices/userAdviceSlice";
 import userSlice from "./adminSlices/userSlice";
 import seatSlice from "./adminSlices/seatSlice";
+import bannerSlice from "./adminSlices/bannerSlice";
+import reviewSlice from "./adminSlices/reviewSlice";
 const rootReducers = combineReducers({
   movie: movieSlice,
   country: countrySlice,
   genre: genreSlice,
   userAdvice: userAdviceSlice,
   user: userSlice,
-  seat: seatSlice
+  seat: seatSlice,
+  banner: bannerSlice,
+  review: reviewSlice
 });
 export default rootReducers;
