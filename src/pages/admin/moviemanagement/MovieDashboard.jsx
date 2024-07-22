@@ -18,6 +18,7 @@ function MovieDashboard()
     const navigate = useNavigate();
     const [ searchValue, setSearchValue ] = useState("");
     const setValueDebounced = useDebounce(setSearchValue, 500);
+    const [ sortDirection, setSortDirection ] = useState("ASC");
 
     const handleChangePage = (event, value) =>
     {
@@ -76,15 +77,19 @@ function MovieDashboard()
     // {
     //     setShowEditForm(false);
     // };
+    const handleDirection = (e) =>
+    {
+        setSortDirection(e.target.value);
+    };
     useEffect(() =>
     {
         if (searchValue)
         {
-            dispatch(searchMovie({ searchValue, sortOption, page }));
+            dispatch(searchMovie({ searchValue, sortOption, page, sortDirection }));
         }
         else
         {
-            dispatch(fetchAllMovies({ page, sortOption, searchValue }));
+            dispatch(fetchAllMovies({ page, sortOption, searchValue, sortDirection }));
         }
         if (movieDetail !== null)
         {
@@ -94,7 +99,7 @@ function MovieDashboard()
         {
             navigate(`../admin/movie-edit/${ editMovieId }`, { replace: true });
         }
-    }, [ page, movieDetail, editMovieId, searchValue, sortOption, deletedMovieId ]);
+    }, [ page, movieDetail, editMovieId, searchValue, sortOption, deletedMovieId, sortDirection ]);
     return (
         <>
             { console.log("In view " + showAddForm) }
@@ -120,6 +125,10 @@ function MovieDashboard()
                                 <option value={ "id" }>Id</option>
                                 <option value={ "title" }>Tên</option>
                                 <option value={ "userAdvice" }>Phân loại</option>
+                            </select>
+                            <select value={ sortDirection } onChange={ handleDirection } name="direction" className="border border-black ml-4">
+                                <option value={ "ASC" }>Tăng dần</option>
+                                <option value={ "DESC" }>Giảm dần</option>
                             </select>
                         </div>
                     </div>
