@@ -15,7 +15,7 @@ export default function Header() {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [showForgotPasswordForm, setShowForgotPasswordForm] = useState(false);
-  const userData = useSelector((state) => state.auth.data);
+  const userData = useSelector((state) => state.auth?.data);
   const dispatch = useDispatch();
 
   useEffect(() => {
