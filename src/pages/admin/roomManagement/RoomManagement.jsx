@@ -2,9 +2,10 @@ import { Pagination } from "@mui/material";
 import { Button, Modal } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteRoom, fetchAllRooms } from "../../../services/adminServices/roomService";
+import { deleteRoom, editRoom, fetchAllRooms } from "../../../services/adminServices/roomService";
 import Search from "antd/es/input/Search";
 import FormAddRoom from "../../../components/adminComponents/movie/FormAddRoom";
+import FormEditRoom from "../../../components/adminComponents/movie/FormEditRoom";
 
 function RoomManagement()
 {
@@ -13,12 +14,13 @@ function RoomManagement()
     const { data } = useSelector(state => state.room);
     const roomPageableData = data?.data?.data;
     const [ showAddForm, setShowAddForm ] = useState(false);
+    const [ showEditForm, setShowEditForm ] = useState(false);
     const [ roomDeleted, setRoomDeleted ] = useState(null);
+    const [ roomEdited, setRoomEdited ] = useState(null);
     const handleShowAddForm = () =>
     {
         setShowAddForm(true);
     };
-
     const handleChangePage = (event, value) =>
     {
         setPage(value);
@@ -27,9 +29,14 @@ function RoomManagement()
     {
         setShowAddForm(false);
     };
-    const handleEditRoom = (roomId) =>
+    const handleShowEditForm = (room) =>
     {
-
+        setShowEditForm(true);
+        setRoomEdited(room);
+    };
+    const handleCloseEditForm = () =>
+    {
+        setShowEditForm(false);
     };
     const handleDeleteRoom = (roomId) =>
     {
@@ -39,12 +46,14 @@ function RoomManagement()
     useEffect(() =>
     {
         dispatch(fetchAllRooms({ page }));
-    }, [ page, showAddForm, roomDeleted ]);
+    }, [ page, showAddForm, roomDeleted, showEditForm ]);
 
     return (
         <>
             { showAddForm && <Modal maskClosable={ false } className="!w-[50%]" onCancel={ handleCloseAddForm } okButtonProps={ { style: { display: 'none' } } } open={ handleShowAddForm } cancelText="Hủy"
                 title="Thêm phòng chiếu mới" centered={ true } ><FormAddRoom closeForm={ handleCloseAddForm } /></Modal> }
+            { showEditForm && <Modal maskClosable={ false } className="!w-[50%]" onCancel={ handleCloseEditForm } okButtonProps={ { style: { display: 'none' } } } open={ handleShowEditForm } cancelText="Hủy"
+                title="Chỉnh sửa thông tin phòng chiếu" centered={ true } ><FormEditRoom roomToBeEdited={ roomEdited } closeForm={ handleCloseEditForm } /></Modal> }
             <div>
                 <div className="flex flex-row justify-between">
                     <h1 className="font-bold">Quản lý danh sách phòng chiếu</h1>
@@ -82,7 +91,7 @@ function RoomManagement()
                                 <td className="border border-black">{ room.name }</td>
                                 <td className="border border-black">{ room.capacity }</td>
                                 <td className="border border-black">{ room.status ? "Đang hoạt động" : "Ngừng hoạt động" }</td>
-                                <td className="border border-black"><Button onClick={ () => handleEditRoom(room.id) } className="bg-green-600">Sửa thông tin</Button></td>
+                                <td className="border border-black"><Button onClick={ () => handleShowEditForm(room) } className="bg-green-600">Sửa thông tin</Button></td>
                                 <td className="border border-black"><Button danger onClick={ () => handleDeleteRoom(room.id) }>Xóa phim</Button></td>
                             </tr>);
                         }) }
