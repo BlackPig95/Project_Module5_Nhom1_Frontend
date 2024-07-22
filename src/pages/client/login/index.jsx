@@ -53,15 +53,18 @@ const LoginForm = ({ closeForm, openRegisterForm, openForgotPasswordForm }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Gọi API đăng nhập tài khoản
-    dispatch(
-      login({
-        email: user.email,
-        password: user.password,
-      })
-    ).then((response) => {
-      const roles = response.payload.roles;
-      if (roles.some((role) => role === "ADMIN")) {
+    try {
+      // Gọi API đăng nhập tài khoản
+      const response = await dispatch(
+        login({
+          email: user.email,
+          password: user.password,
+        })
+      ).unwrap(); // Use unwrap to directly get the payload or throw an error
+
+      console.log(response);
+      const roles = response?.roles;
+      if (roles && roles.some((role) => role === "ADMIN")) {
         navigate("/admin");
       } else {
         navigate("/");
@@ -72,16 +75,14 @@ const LoginForm = ({ closeForm, openRegisterForm, openForgotPasswordForm }) => {
         description: "Đăng nhập thành công",
       });
       closeForm();
-    });
-    // .catch((err) => {
-    //   // console.log(err);
-    //   notification.error({
-    //     message: "Thất bại",
-    //     description: "Đăng nhập thất bại.",
-    //   });
-    // });
+    } catch (err) {
+      console.log(err);
+      notification.error({
+        message: "Thất bại",
+        description: "Đăng nhập thất bại.",
+      });
+    }
   };
-
   return (
     <>
       <div

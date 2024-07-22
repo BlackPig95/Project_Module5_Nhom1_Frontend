@@ -19,11 +19,11 @@ export default function Menu() {
             <DashboardOutlined />
             <span>Tổng quan</span>
           </NavLink>
-          <NavLink className="link" to="/admin/student">
+          <NavLink className="link" to="/admin/user-management">
             <UserOutlined />
-            <span>Sinh viên</span>
+            <span>QUản lý user</span>
           </NavLink>
-          <NavLink className="link" to="/admin/report">
+          <NavLink className="link" to="/admin/ticket-management">
             <PieChartOutlined />
             <span> Báo cáo</span>
           </NavLink>

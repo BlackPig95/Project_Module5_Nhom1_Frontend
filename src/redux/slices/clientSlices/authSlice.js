@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import Cookies from "js-cookie";
 import {
   login,
   loadUserFromCookie,
 } from "../../../services/clientServices/authService";
-import Cookies from "js-cookie";
+
 import { LOAD_STATUS } from "../../../constants";
 const authSlice = createSlice({
   name: "auth",
