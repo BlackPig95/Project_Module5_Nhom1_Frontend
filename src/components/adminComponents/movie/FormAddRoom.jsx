@@ -16,7 +16,7 @@ function FormAddRoom({ closeForm })
     );
     const handleAddRoom = () =>
     {
-        console.log(room);
+        // console.log(room);
         dispatch(addRoom(room)).then(closeForm());
     };
     const handleChangeInput = (e) =>
