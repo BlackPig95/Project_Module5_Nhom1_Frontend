@@ -1,4 +1,5 @@
 import React from "react";
+import MovieDetail from "../../pages/client/movieDetail/MovieDetail";
 
 const Home = React.lazy(() => import("../../pages/client/Home"));
 // import Home from "../../pages/client/Home";
@@ -22,7 +23,7 @@ const publicRoutes = [
   },
   {
     path: "/movies-detail",
-    element: <MoviesDetail />,
+    element: <MovieDetail />,
   },
   {
     path: "/payment",
