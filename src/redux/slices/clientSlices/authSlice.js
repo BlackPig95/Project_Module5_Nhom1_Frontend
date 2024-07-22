@@ -17,6 +17,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.data = null;
       Cookies.remove("token");
+      localStorage.removeItem("user");
     },
   },
   extraReducers: (builder) => {
@@ -28,6 +29,7 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.loading = "succeeded";
         state.data = action.payload;
+        localStorage.setItem("user", JSON.stringify(action.payload));
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = "failed";
