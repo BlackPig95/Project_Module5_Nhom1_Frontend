@@ -3,9 +3,9 @@ import BASE_URL from "../../api";
 import { HTTP_METHOD } from "../../constants";
 
 export const fetchAllRooms = createAsyncThunk("room/fetchAllRooms",
-    async ({ page }) =>
+    async ({ page, sortOption, sortDirection }) =>
     {
-        const response = await BASE_URL[ HTTP_METHOD.GET ](`admin/rooms?page=${ page - 1 }`);
+        const response = await BASE_URL[ HTTP_METHOD.GET ](`admin/rooms?page=${ page - 1 }&sort=${ sortOption },${ sortDirection }`);
         return response;
     }
 );
