@@ -3,6 +3,9 @@ import MovieDetailPage from "../../../pages/admin/movieDetail/movieDetail";
 import MovieDashboard from "../../../pages/admin/moviemanagement/MovieDashboard";
 import { useParams } from "react-router-dom";
 import FormEditMovie from "../../../components/adminComponents/movie/FormEditMovie";
+import SeatManagement from "../../../pages/admin/SeatManagement";
+import BannerManagement from "../../../pages/admin/bannerManagement/BannerManagement";
+import ReviewManagement from "../../../pages/admin/reviewManagement/ReviewManagement";
 import RoomManagement from "../../../pages/admin/roomManagement/RoomManagement";
 
 const Dashboard = React.lazy(() => import("../../../pages/admin/Dashboard"));
@@ -41,6 +44,18 @@ const privateRoutes = [
   {
     path: "/admin/payment-management",
     element: <PaymentManagement />,
+  },
+  {
+    path: "/admin/review-management",
+    element: <ReviewManagement />,
+  },
+  {
+    path: "/admin/banner-management",
+    element: <BannerManagement />,
+  },
+  {
+    path: "/admin/seat-management",
+    element: <SeatManagement />,
   },
   {
     path: "/admin/ticket-management",
