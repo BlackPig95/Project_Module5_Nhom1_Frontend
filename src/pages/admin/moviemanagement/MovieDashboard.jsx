@@ -42,9 +42,11 @@ function MovieDashboard()
         dispatch(fetchAllMovies({ page, sortOption, searchValue }));  //Khiến cho không cập nhật được state khi gọi từ component FormAddMovie?
         console.log("After " + showAddForm);
     };
+    const [ deletedMovieId, setDeletedMovieId ] = useState(null);
     const handleDeleteMovie = (id) =>
     {
         dispatch(deleteMovie(id));
+        setDeletedMovieId(id);
     };
     const handleMovieDetails = (movie) =>
     {
@@ -90,10 +92,11 @@ function MovieDashboard()
         {
             navigate(`../admin/movie-edit/${ editMovieId }`, { replace: true });
         }
-    }, [ page, movieDetail, editMovieId, searchValue, sortOption ]);
+    }, [ page, movieDetail, editMovieId, searchValue, sortOption, deletedMovieId ]);
     return (
         <>
             { console.log("In view " + showAddForm) }
+            { console.log(pageableData) }
             {/* { console.log(pageableData?.content) } */ }
             { showAddForm && <Modal className="!w-[50%]" onCancel={ handleCloseAddForm } okButtonProps={ { style: { display: 'none' } } } open={ handleShowAddForm } cancelText="Hủy"
                 title="Thêm phim mới" centered={ true } ><FormAddMovie closeForm={ handleCloseAddForm } /></Modal> }

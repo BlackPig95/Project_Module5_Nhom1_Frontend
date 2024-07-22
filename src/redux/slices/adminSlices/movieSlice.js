@@ -36,12 +36,12 @@ const movieSlice = createSlice({
             state.loading = LOAD_STATUS.REJECTED;
             state.error = action.error.message;
         });
-        builder.addCase(deleteMovie.fulfilled, (state, action) =>
+        builder.addCase(deleteMovie.fulfilled, async (state, action) =>
         {
             state.loading = LOAD_STATUS.FULLFILLED;
             state.data = action.payload;
         });
-        builder.addCase(deleteMovie.rejected, (state, action) =>
+        builder.addCase(deleteMovie.rejected, async (state, action) =>
         {
             state.loading = LOAD_STATUS.REJECTED;
             state.error = action.error.message;
