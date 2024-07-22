@@ -9,16 +9,18 @@ import {
   sortMovie,
 } from "../../../services/adminServices/movieServices";
 import FormAddMovie from "../../../components/adminComponents/movie/FormAddMovie";
-import { FormControl, Pagination, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useDebounce, useDebouncedValue } from "rooks";
-import FormEditMovie from "../../../components/adminComponents/movie/FormEditMovie";
+import { Pagination } from "@mui/material";
+import { useDebounce } from "rooks";
 
 function MovieDashboard() {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [movieDetail, setMovieDetail] = useState(null);
   const navigate = useNavigate();
+  const [searchValue, setSearchValue] = useState("");
+  const setValueDebounced = useDebounce(setSearchValue, 500);
+
   const handleChangePage = (event, value) => {
     setPage(value);
   };
@@ -36,10 +38,10 @@ function MovieDashboard() {
     setShowAddForm(true);
   };
   const handleCloseAddForm = () => {
-    // console.log("Before " + showAddForm);
+    console.log("Before " + showAddForm);
     setShowAddForm(false);
-    // dispatch(fetchAllMovies()); Khiến cho không cập nhật được state khi gọi từ component FormAddMovie?
-    // console.log("After " + showAddForm);
+    dispatch(fetchAllMovies({ page, sortOption, searchValue })); //Khiến cho không cập nhật được state khi gọi từ component FormAddMovie?
+    console.log("After " + showAddForm);
   };
   const handleDeleteMovie = (id) => {
     dispatch(deleteMovie(id));
@@ -47,7 +49,6 @@ function MovieDashboard() {
   const handleMovieDetails = (movie) => {
     setMovieDetail(movie);
   };
-  const [searchValue, setSearchValue] = useState("");
   const handleSearch = (e) => {
     e.preventDefault();
     dispatch(searchMovie(searchValue));
@@ -68,17 +69,17 @@ function MovieDashboard() {
   //     setShowEditForm(false);
   // };
   useEffect(() => {
-    dispatch(fetchAllMovies(page));
+    dispatch(fetchAllMovies({ page, sortOption, searchValue }));
     if (movieDetail !== null) {
       navigate(`../admin/movie-detail/${movieDetail.id}`, { replace: true });
     }
     if (editMovieId !== null) {
       navigate(`../admin/movie-edit/${editMovieId}`, { replace: true });
     }
-  }, [page, movieDetail, editMovieId]);
+  }, [page, movieDetail, editMovieId, searchValue]);
   return (
     <>
-      {/* { console.log("In view " + showAddForm) } */}
+      {console.log("In view " + showAddForm)}
       {/* { console.log(pageableData?.content) } */}
       {showAddForm && (
         <Modal
@@ -94,7 +95,7 @@ function MovieDashboard() {
         </Modal>
       )}
       {/* { showEditForm && <Modal className="!w-[50%]" onCancel={ handleCloseEditForm } okButtonProps={ { style: { display: 'none' } } } open={ handleEditMovie } cancelText="Hủy"
-                title="Cập nhật thông tin phim" centered={ true }><FormEditMovie movieId={ editMovieId } /> </Modal> } */}
+              title="Cập nhật thông tin phim" centered={ true }><FormEditMovie movieId={ editMovieId } /> </Modal> } */}
 
       <div>
         <div className="flex flex-row justify-between">
@@ -104,13 +105,12 @@ function MovieDashboard() {
               Thêm phim mới
             </Button>
             {/* <TextField id="outlined-basic" value={ searchValue } onChange={ e => setSearchValue(e.target.value) }
-                                label="Tìm kiếm phim" variant="outlined" size="small" /> */}
+                              label="Tìm kiếm phim" variant="outlined" size="small" /> */}
             <form onSubmit={(e) => handleSearch(e)}>
               <Search
                 onClick={handleSearch}
-                onChange={(e) => setSearchValue(e.target.value)}
+                onChange={(e) => setValueDebounced(e.target.value)}
                 placeholder="Tìm kiếm phim"
-                value={searchValue}
               ></Search>
             </form>
             <div>
