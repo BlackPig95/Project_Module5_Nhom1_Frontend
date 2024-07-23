@@ -7,8 +7,6 @@ import FormAddMovie from "../../../components/adminComponents/movie/FormAddMovie
 import { useNavigate } from "react-router-dom";
 import { Pagination } from "@mui/material";
 import { useDebounce } from "rooks";
-import LayoutIndex from "../../../layouts/admin/layoutIndex";
-import Dashboard from "../Dashboard";
 
 function MovieDashboard()
 {

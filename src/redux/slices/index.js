@@ -33,8 +33,7 @@ const rootReducers = combineReducers({
   review: reviewSlice,
   room: roomSlice,
   showtime: showtimeSlice,
-  showSeatClient: seatClientSlice
-
+  showSeatClient: seatClientSlice,
   clientBanner: clientBannerSlice,
   clientMovie: clientMovieSlice,
   clientReview: clientReviewSlice,

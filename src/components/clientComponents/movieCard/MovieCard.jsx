@@ -2,14 +2,14 @@
 function MovieCard({ movieGenres, movieName, userAdvice, releaseDate, movieImage })
 {
     return (
-        <div className="cursor-pointer shadow-lg text-white">
-            <div className="relative w-full h-[290px] overflow-hidden rounded-xl shadow-lg">
+        <div className="cursor-pointer shadow-lg text-white bg-[#10141B] border rounded-xl">
+            <div className="relative w-full h-[290px] overflow-hidden shadow-lg">
                 <img
                     alt={ `${ movieName }-${ userAdvice }` }
                     loading="lazy"
                     decoding="async"
                     data-nimg="fill"
-                    className="object-cover object-center rounded-xl hover:scale-110 transition duration-500"
+                    className="object-cover object-center rounded-none hover:scale-110 transition duration-500"
                     sizes="230px"
                     src={ movieImage }
                     style={ {
@@ -21,7 +21,7 @@ function MovieCard({ movieGenres, movieName, userAdvice, releaseDate, movieImage
                     } }
                 />
             </div>
-            <div>
+            <div className="p-2">
                 <div className="flex flex-wrap items-center gap-x-5 text-sm mt-3">
                     <p>{ movieGenres.map((genre) =>
                     {

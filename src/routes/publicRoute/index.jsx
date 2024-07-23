@@ -1,6 +1,7 @@
 import React from "react";
 import MovieDetail from "../../pages/client/movieDetail/MovieDetail";
 import HotMovie from "../../pages/client/hotMovieList/HotMovie";
+import SearchMovie from "../../pages/client/searchMovie/SearchMovie";
 
 const Home = React.lazy(() => import("../../pages/client/Home"));
 // import Home from "../../pages/client/Home";
@@ -44,6 +45,10 @@ const publicRoutes = [
   {
     path: "/movie-hot",
     element: <HotMovie />
+  },
+  {
+    path: "/movie-search",
+    element: <SearchMovie />
   }
 ];
 
