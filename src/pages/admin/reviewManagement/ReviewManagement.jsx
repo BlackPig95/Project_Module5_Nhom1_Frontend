@@ -1,106 +1,104 @@
-import { CircularProgress, Pagination } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchAllSeats,
-  updateSeats,
-} from "../../services/adminServices/seatServices";
-import { LOAD_STATUS } from "../../constants";
-import "./SeatManagement.css";
+import  { useEffect, useState } from "react";
+import "./ReviewManagement.css";
 import { Modal } from "antd";
-
-export default function SeatManagement() {
+import { LOAD_STATUS } from "../../../constants";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllReview, updateReview } from "../../../services/adminServices/reviewServices";
+import { CircularProgress } from "@mui/material";
+export default function ReviewManagement() {
   const dispatch = useDispatch();
-  const { data, loading, error } = useSelector((state) => state.seat);
-  const [page, setPage] = useState(1);
-  const [seatUpdate, setSeatUpdate] = useState({
+  const { data, loading, error } = useSelector((state) => state.review);
+  console.log("data",data);
+  const [reviewUpdate, setReviewUpdate] = useState({
     //every field here must be the same with input name.
-    type: "",
-    seatRow: "",
-    number: "",
-    isAvailable: "",
+    comment: "",
+    rating: "",
+    status: "",
+    reviewDate: "",
   });
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
 
-  const showModal = (seat) => {
-    setSeatUpdate(seat);
-    setIsModalOpen(true);
+  const showModalUpdate = (review) => {
+    setReviewUpdate(review);
+    setIsModalUpdateOpen(true);
   };
-  const handleCancel = () => {
-    setIsModalOpen(false);
+  const handleCancelUpdate = () => {
+    setIsModalUpdateOpen(false);
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateSeats(seatUpdate));
-    setIsModalOpen(false);
+
+    dispatch(updateReview(reviewUpdate));
+
+    setIsModalUpdateOpen(false);
   };
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
 
-    setSeatUpdate({
-      ...seatUpdate,
+    setReviewUpdate({
+      ...reviewUpdate,
       [name]: value,
     });
   };
 
-  useEffect(() => {
-    dispatch(fetchAllSeats({ page }));
-  }, [dispatch, page]);
 
-  const handlePageChange = (event, value) => {
-    setPage(value);
-  };
+    useEffect(() => {
+      dispatch(fetchAllReview());
+    }, [dispatch]);
 
   return (
     <>
       <main className="ra-listuser">
-        <h1 className="text-[30px]">List Seat</h1>
+        <h1 className="text-[30px]">List Review</h1>
 
         <Modal
           title="Update"
-          open={isModalOpen}
-          onOk={handleCancel}
-          onCancel={handleCancel}
+          open={isModalUpdateOpen}
+          onOk={handleCancelUpdate}
+          onCancel={handleCancelUpdate}
         >
           <form onSubmit={handleSubmit} className="gap-2">
             <div className="m-1">
-              <label className>Type</label>
+              <label className>comment</label>
               <input
                 className="p-1 mx-1"
                 type="text"
-                placeholder="Type"
-                name="type"
-                value={seatUpdate?.type}
+                placeholder="comment"
+                name="comment"
+                value={reviewUpdate?.comment}
                 onChange={handleOnChange}
               />
             </div>
             <div className="m-1">
-              <label>Seat Row</label>
+              <label>rating</label>
               <input
                 type="text"
                 className="p-1 mx-1"
-                placeholder="Seat Row"
-                name="seatRow"
-                value={seatUpdate?.seatRow}
+                placeholder="rating"
+                name="rating"
+                value={reviewUpdate?.rating}
                 onChange={handleOnChange}
               />
             </div>
             <div className="m-1">
-              <label>number</label>
+              <label>reviewDate</label>
               <input
-                type="number"
-                name="number"
+                type="text"
                 className="p-1 mx-1"
-                placeholder="number"
-                value={seatUpdate?.number}
+                placeholder="reviewDate"
+                name="reviewDate"
+                value={reviewUpdate?.reviewDate}
                 onChange={handleOnChange}
               />
             </div>
             <div className="m-1">
-              <label>IsAvailable</label>
+              <label>status</label>
               <select
                 className="p-1 mx-1"
-                value={seatUpdate?.isAvailable}
+                value={reviewUpdate?.status}
+                name="status"
                 onChange={handleOnChange}
               >
                 <option value="true">Active</option>
@@ -120,36 +118,34 @@ export default function SeatManagement() {
         </Modal>
 
         {error && <p>{error}</p>}
-        {loading == LOAD_STATUS.FULLFILLED ? (
+        {loading === LOAD_STATUS.FULLFILLED ? (
           <>
             <table className="custom-table">
               <thead>
                 <tr>
                   <th>STT</th>
-                  <th>Type</th>
-                  <th>Seat Row</th>
-                  <th>Number</th>
-                  <th>Is Available</th>
-                  <th>RoomID</th>
+                  <th>Comment</th>
+                  <th>Rating</th>
+                  <th>Status</th>
+                  <th>reviewDate</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {data?.content?.map((seat) => {
+                {data?.map((review) => {
                   return (
-                    <tr key={seat.id}>
-                      <td> {seat.id}</td>
-                      <td>{seat.type}</td>
-                      <td>{seat.seatRow}</td>
-                      <td>{seat.number}</td>
-                      <td>{seat.isAvailable ? "Active" : "Inactive"}</td>
-                      <td>{seat.room.id}</td>
+                    <tr key={review.id}>
+                      <td>{review.id}</td>
+                      <td>{review.comment}</td>
+                      <td>{review.rating}</td>
+                      <td>{review.status ? "Active" : "Inactive"}</td>
+                      <td>{review.reviewDate}</td>
                       <td>
                         <button
                           type="button"
                           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                           onClick={() => {
-                            showModal(seat);
+                            showModalUpdate(review);
                           }}
                         >
                           Update
@@ -160,12 +156,6 @@ export default function SeatManagement() {
                 })}
               </tbody>
             </table>
-            <Pagination
-              count={data?.totalPages}
-              page={page}
-              onChange={handlePageChange}
-              color="primary"
-            />
           </>
         ) : (
           <CircularProgress />

@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LOAD_STATUS } from "../../../constants";
-import { fetchAllUsers } from "../../../services/adminServices/userServices";
+import {
+  fetchAllUsers,
+  updateUserStatus,
+} from "../../../services/adminServices/userServices";
 
 const userSlice = createSlice({
   name: "user",
@@ -20,6 +23,15 @@ const userSlice = createSlice({
     });
     builder.addCase(fetchAllUsers.rejected, (state, action) => {
       state.loading = LOAD_STATUS.REJECTED;
+      state.error = action.payload || action.error.message;
+    });
+    builder.addCase(updateUserStatus.fulfilled, (state, action) => {
+      const userId = action.payload;
+      state.data.content = state.data.content.map((user) =>
+        user.id === userId ? { ...user, status: !user.status } : user
+      );
+    });
+    builder.addCase(updateUserStatus.rejected, (state, action) => {
       state.error = action.payload || action.error.message;
     });
   },

@@ -60,7 +60,7 @@ const LoginForm = ({ closeForm, openRegisterForm, openForgotPasswordForm }) => {
           email: user.email,
           password: user.password,
         })
-      ).unwrap(); // Use unwrap to directly get the payload or throw an error
+      ).unwrap();
 
       console.log(response);
       const roles = response?.roles;

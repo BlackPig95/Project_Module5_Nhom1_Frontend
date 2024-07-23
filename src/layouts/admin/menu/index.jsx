@@ -1,6 +1,7 @@
 import {
   DashboardOutlined,
   PieChartOutlined,
+  SpotifyOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import React from "react";
@@ -26,6 +27,14 @@ export default function Menu() {
           <NavLink className="link" to="/admin/ticket-management">
             <PieChartOutlined />
             <span> Báo cáo</span>
+          </NavLink>
+          <NavLink className="link" to="/admin/voucher-management">
+            <SpotifyOutlined />
+            <span>Giảm giá</span>
+          </NavLink>
+          <NavLink className="link" to="/admin/news-management">
+            <SpotifyOutlined />
+            <span>Tin tức</span>
           </NavLink>
         </div>
       </menu>

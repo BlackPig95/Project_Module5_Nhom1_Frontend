@@ -15,16 +15,28 @@ export default function Header() {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [showForgotPasswordForm, setShowForgotPasswordForm] = useState(false);
-  const userData = useSelector((state) => state.auth?.data);
+  const [userData, setUserData] = useState(() =>
+    JSON.parse(localStorage.getItem("user"))
+  );
+
+  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = Cookies.get("token"); // Sử dụng js-cookie
+    const token = Cookies.get("token");
     if (token) {
-      const parsedToken = JSON.parse(token);
+      const parsedToken = token;
       dispatch(loadUserFromCookie(parsedToken));
     }
+    const user = JSON.parse(localStorage.getItem("user"));
+    setUserData(user);
   }, [dispatch]);
+
+  useEffect(() => {
+    if (auth?.data) {
+      setUserData(auth?.data);
+    }
+  }, [auth]);
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
@@ -56,6 +68,10 @@ export default function Header() {
 
   const handleLogout = () => {
     dispatch(logout());
+    Cookies.remove("token");
+    localStorage.removeItem("user");
+    setUserData(null);
+    closeForm();
   };
 
   return (
@@ -90,9 +106,9 @@ export default function Header() {
         </a>
       </nav>
       <div className="header-actions">
-        {userData ? (
+        {Cookies.get("token") && userData ? (
           <>
-            <span className="text-black">
+            <span className="text-white">
               Tên đăng nhập: {userData.fullName}
             </span>
             <Button onClick={handleLogout} type="primary">

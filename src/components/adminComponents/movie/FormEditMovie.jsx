@@ -8,9 +8,9 @@ import { useCookies } from "react-cookie";
 function FormEditMovie()
 {
     const { id } = useParams();
-    const [ cookies, setCookies ] = useCookies("id", id);
+    // const [ cookies, setCookies ] = useCookies("id", id);
     const [ errors, setErrors ] = useState([]);
-    setCookies("id", id);
+    // setCookies("id", id);
     const handleChange = (e) =>
     {
         const { name, value } = e.target;
@@ -196,7 +196,7 @@ function FormEditMovie()
         for (let i = 0; i < Object.keys(movie).length; i++)
         {
             formData.append(Object.keys(movie)[ i ], Object.values(movie)[ i ]);
-            console.log(Object.keys(movie)[ i ] + " " + Object.values(movie)[ i ]);
+            // console.log(typeof Object.keys(movie)[ i ] + " | " + Object.keys(movie)[ i ] + " | " + Object.values(movie)[ i ]);
         }
         if (errors.length > 0)
         {
@@ -266,7 +266,6 @@ function FormEditMovie()
     return (
         <div div >
             { console.log("movie", movie) }
-            { console.log("edit", movieToBeEdited) }
             <form className="flex flex-col gap-4 w-full" onSubmit={ handleSubmit }>
                 <div>
                     <label htmlFor="">Tên phim</label>
