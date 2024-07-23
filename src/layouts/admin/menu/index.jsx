@@ -36,6 +36,10 @@ export default function Menu() {
             <SpotifyOutlined />
             <span>Tin tức</span>
           </NavLink>
+          <NavLink className="link" to="/admin/ticket-price-management">
+            <SpotifyOutlined />
+            <span>Giá vé</span>
+          </NavLink>
         </div>
       </menu>
     </>
