@@ -5,14 +5,16 @@ import Cookies from "js-cookie";
 
 export const fetchAllNews = createAsyncThunk(
   "news/fetchAllNews",
-  async ({ page }) => {
+  async ({ page, sortField, sortDirection }) => {
     const token = Cookies.get("token");
     if (!token) {
       throw new Error("Token not found");
     }
 
     const response = await BASE_URL[HTTP_METHOD.GET](
-      `/admin/news-management?page=${page - 1}`,
+      `/admin/news-management?page=${
+        page - 1
+      }&sortField=${sortField}&sortDirection=${sortDirection}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

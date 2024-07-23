@@ -10,6 +10,10 @@ import {
   TableRow,
   CircularProgress,
   Button,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -27,10 +31,12 @@ export default function NewsManagement() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [selectedNews, setSelectedNews] = useState(null);
+  const [sortField, setSortField] = useState("id");
+  const [sortDirection, setSortDirection] = useState("ASC");
 
   useEffect(() => {
-    dispatch(fetchAllNews({ page }));
-  }, [dispatch, page]);
+    dispatch(fetchAllNews({ page, sortField, sortDirection }));
+  }, [dispatch, page, sortField, sortDirection]);
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -48,13 +54,21 @@ export default function NewsManagement() {
   const handleDelete = (id) => {
     if (window.confirm("Xóa nhé?")) {
       dispatch(deleteNews(id)).then(() => {
-        dispatch(fetchAllNews({ page }));
+        dispatch(fetchAllNews({ page, sortField, sortDirection }));
       });
     }
   };
 
+  const handleSortFieldChange = (event) => {
+    setSortField(event.target.value);
+  };
+
+  const handleSortDirectionChange = (event) => {
+    setSortDirection(event.target.value);
+  };
+
   const handleFormSuccess = () => {
-    dispatch(fetchAllNews({ page }));
+    dispatch(fetchAllNews({ page, sortField, sortDirection }));
   };
 
   return (
@@ -79,6 +93,30 @@ export default function NewsManagement() {
           onClose={() => setShowEditForm(false)}
         />
       )}
+      <FormControl variant="filled" sx={{ minWidth: 120 }}>
+        <InputLabel>Sắp xếp theo</InputLabel>
+        <Select
+          value={sortField}
+          onChange={handleSortFieldChange}
+          label="Sắp xếp theo"
+        >
+          <MenuItem value="id">Id</MenuItem>
+          <MenuItem value="title">Tiêu đề</MenuItem>
+          <MenuItem value="createdAt">Ngày tạo</MenuItem>
+          <MenuItem value="updatedAt">Ngày sửa</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl variant="filled" sx={{ minWidth: 120 }}>
+        <InputLabel>Hướng sắp xếp</InputLabel>
+        <Select
+          value={sortDirection}
+          onChange={handleSortDirectionChange}
+          label="Hướng sắp xếp"
+        >
+          <MenuItem value="ASC">Tăng dần</MenuItem>
+          <MenuItem value="DESC">Giảm dần</MenuItem>
+        </Select>
+      </FormControl>
       {error && <p>{error}</p>}
       {loading === LOAD_STATUS.FULLFILLED ? (
         <>

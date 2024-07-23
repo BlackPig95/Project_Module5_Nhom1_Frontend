@@ -1,8 +1,8 @@
 //Gọi API lấy ra list các movie, truyền các props vào component để render
-function MovieCard({ movieGenres, movieName, userAdvice, releaseDate })
+function MovieCard({ movieGenres, movieName, userAdvice, releaseDate, movieImage })
 {
     return (
-        <div className="cursor-pointer shadow-lg">
+        <div className="cursor-pointer shadow-lg text-white">
             <div className="relative w-full h-[290px] overflow-hidden rounded-xl shadow-lg">
                 <img
                     alt={ `${ movieName }-${ userAdvice }` }
@@ -11,7 +11,7 @@ function MovieCard({ movieGenres, movieName, userAdvice, releaseDate })
                     data-nimg="fill"
                     className="object-cover object-center rounded-xl hover:scale-110 transition duration-500"
                     sizes="230px"
-                    src="https://cdnphoto.dantri.com.vn/COm1qksauO2sqAC-gVVI2DdH_1I=/thumb_w/1020/2023/01/24/khoa-hocdocx-1674520013659.png"
+                    src={ movieImage }
                     style={ {
                         position: "absolute",
                         height: "100%",
@@ -22,15 +22,15 @@ function MovieCard({ movieGenres, movieName, userAdvice, releaseDate })
                 />
             </div>
             <div>
-                <div className="flex flex-wrap items-center gap-x-5 text-[#5D6A81] text-sm mt-3">
+                <div className="flex flex-wrap items-center gap-x-5 text-sm mt-3">
                     <p>{ movieGenres.map((genre) =>
                     {
                         //movieGenre sẽ là một list các genre => Dùng map để render
-                        return (<span>{ `${ genre.name }, ` }</span>);
+                        return (<span>{ `${ genre.name } | ` }</span>);
                     }) }</p>
                     <p>{ releaseDate }</p>
                 </div>
-                <p className="mt-2 text-sm xl:text-base font-bold">BÉ MA CỦA ANH-T16</p>
+                <p className="mt-2 text-sm xl:text-base font-bold">{ movieName }-{ userAdvice }</p>
             </div>
         </div>
 
