@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LOAD_STATUS } from "../../../constants";
-import { fetchClientMovies } from "../../../services/clientServices/clientMovieService";
+import { fetchClientMovies, fetchHotMovies } from "../../../services/clientServices/clientMovieService";
 
 const initialState =
 {
@@ -25,6 +25,21 @@ const clientMovieSlice = createSlice({
             state.data = action.payload;
         });
         builder.addCase(fetchClientMovies.rejected, (state, action) =>
+        {
+            state.loading = LOAD_STATUS.REJECTED;
+            state.data = action.payload;
+        });
+        builder.addCase(fetchHotMovies.pending, state =>
+        {
+            state.loading = LOAD_STATUS.PENDING;
+        }
+        );
+        builder.addCase(fetchHotMovies.fulfilled, (state, action) =>
+        {
+            state.loading = LOAD_STATUS.FULLFILLED;
+            state.data = action.payload;
+        });
+        builder.addCase(fetchHotMovies.rejected, (state, action) =>
         {
             state.loading = LOAD_STATUS.REJECTED;
             state.data = action.payload;
