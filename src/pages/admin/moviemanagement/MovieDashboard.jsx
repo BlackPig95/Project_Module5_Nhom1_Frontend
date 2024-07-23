@@ -42,7 +42,7 @@ function MovieDashboard()
     {
         // console.log("Before " + showAddForm);
         setShowAddForm(false);
-        dispatch(fetchAllMovies({ page, sortOption, searchValue }));  //Khiến cho không cập nhật được state khi gọi từ component FormAddMovie?
+        dispatch(fetchAllMovies({ page, sortOption, searchValue, sortDirection }));  //Khiến cho không cập nhật được state khi gọi từ component FormAddMovie?
         // console.log("After " + showAddForm);
     };
     const [ deletedMovieId, setDeletedMovieId ] = useState(null);
@@ -58,7 +58,7 @@ function MovieDashboard()
     const handleSearch = (e) =>
     {
         e.preventDefault();
-        dispatch(searchMovie({ searchValue, sortOption, page }));
+        dispatch(searchMovie({ searchValue, sortOption, page, sortDirection }));
     };
     const [ sortOption, setSortOption ] = useState("id");
     const handleChangeSort = (e) =>

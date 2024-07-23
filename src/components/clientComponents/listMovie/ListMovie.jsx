@@ -1,6 +1,7 @@
+import { formatDate } from "../../../util/formatDate";
 import MovieCard from "../movieCard/MovieCard";
 
-function ListMovie({ pageName })
+function ListMovie({ pageName, movieList })
 {
     return (
         <>
@@ -12,20 +13,13 @@ function ListMovie({ pageName })
                 <a className="underline">Xem tất cả</a>
             </div>
             <div className="grid grid-cols-4 gap-4">
-                <MovieCard movieName={ 'abc' } movieGenres={ [ { name: 'abc' }, { name: 'xyz' } ] } userAdvice={ 'T13' } releaseDate={ '2024 / 12 / 12' } />
-                <MovieCard movieName={ 'abc' } movieGenres={ [ { name: 'abc' }, { name: 'xyz' } ] } userAdvice={ 'T13' } releaseDate={ '2024 / 12 / 12' } />
-                <MovieCard movieName={ 'abc' } movieGenres={ [ { name: 'abc' }, { name: 'xyz' } ] } userAdvice={ 'T13' } releaseDate={ '2024 / 12 / 12' } />
-                <MovieCard movieName={ 'abc' } movieGenres={ [ { name: 'abc' }, { name: 'xyz' } ] } userAdvice={ 'T13' } releaseDate={ '2024 / 12 / 12' } />
-                <MovieCard movieName={ 'abc' } movieGenres={ [ { name: 'abc' }, { name: 'xyz' } ] } userAdvice={ 'T13' } releaseDate={ '2024 / 12 / 12' } />
-                <MovieCard movieName={ 'abc' } movieGenres={ [ { name: 'abc' }, { name: 'xyz' } ] } userAdvice={ 'T13' } releaseDate={ '2024 / 12 / 12' } />
-                <MovieCard movieName={ 'abc' } movieGenres={ [ { name: 'abc' }, { name: 'xyz' } ] } userAdvice={ 'T13' } releaseDate={ '2024 / 12 / 12' } />
-                <MovieCard movieName={ 'abc' } movieGenres={ [ { name: 'abc' }, { name: 'xyz' } ] } userAdvice={ 'T13' } releaseDate={ '2024 / 12 / 12' } />
-                <MovieCard movieName={ 'abc' } movieGenres={ [ { name: 'abc' }, { name: 'xyz' } ] } userAdvice={ 'T13' } releaseDate={ '2024 / 12 / 12' } />
-                <MovieCard movieName={ 'abc' } movieGenres={ [ { name: 'abc' }, { name: 'xyz' } ] } userAdvice={ 'T13' } releaseDate={ '2024 / 12 / 12' } />
-                <MovieCard movieName={ 'abc' } movieGenres={ [ { name: 'abc' }, { name: 'xyz' } ] } userAdvice={ 'T13' } releaseDate={ '2024 / 12 / 12' } />
-                <MovieCard movieName={ 'abc' } movieGenres={ [ { name: 'abc' }, { name: 'xyz' } ] } userAdvice={ 'T13' } releaseDate={ '2024 / 12 / 12' } />
-                <MovieCard movieName={ 'abc' } movieGenres={ [ { name: 'abc' }, { name: 'xyz' } ] } userAdvice={ 'T13' } releaseDate={ '2024 / 12 / 12' } />
-                <MovieCard movieName={ 'abc' } movieGenres={ [ { name: 'abc' }, { name: 'xyz' } ] } userAdvice={ 'T13' } releaseDate={ '2024 / 12 / 12' } />
+                { movieList?.map(movie => 
+                {
+                    return (<MovieCard key={ movie.id } movieName={ movie.title } userAdvice={ movie.userAdvice } releaseDate={ formatDate(movie.releaseDate) }
+                        movieGenres={ movie.genres } movieImage={ movie.posterUrl } />);
+                }
+                ) }
+
             </div>
         </>
     );
