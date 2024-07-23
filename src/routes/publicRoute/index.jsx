@@ -1,10 +1,12 @@
 import React from "react";
+import MovieDetail from "../../pages/client/movieDetail/MovieDetail";
 
 const Home = React.lazy(() => import("../../pages/client/Home"));
 const Movies = React.lazy(() => import("../../pages/client/Movies"));
-const MoviesDetail = React.lazy(() =>
-  import("../../pages/client/MoviesDetail")
-);
+// const MoviesDetail = React.lazy(() =>
+//   import("../../pages/client/movieDetail/MovieDetail")
+// );
+
 const Payment = React.lazy(() => import("../../pages/client/Payment"));
 const TicketPrice = React.lazy(() => import("../../pages/client/TicketPrice"));
 
@@ -21,7 +23,7 @@ const publicRoutes = [
   },
   {
     path: "/movies-detail",
-    element: <MoviesDetail />,
+    element: <MovieDetail />,
   },
   {
     path: "/payment",

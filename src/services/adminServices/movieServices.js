@@ -42,7 +42,7 @@ export const showMovieDetails = createAsyncThunk("movie/showMovieDetails",
     async (id) =>
     {
         console.log("Movie detail ", id);
-        const response = await BASE_URL.get(`admin/movies/${ id }`);
+        const response = await BASE_URL.get(`admin/movies/${id}`);
         return response;
     }
 );

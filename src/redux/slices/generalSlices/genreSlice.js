@@ -16,10 +16,9 @@ const genreSlice = createSlice({
         {
             state.loading = LOAD_STATUS.PENDING;
         });
-        builder.addCase(fetchAllGenres.fulfilled, (state, action) =>
-        {
-            state.loading = LOAD_STATUS.FULLFILLED;
-            state.data = action.payload;
+        builder.addCase(fetchAllGenres.fulfilled, (state, action) => {
+          state.loading = LOAD_STATUS.FULLFILLED;
+          state.data = action.payload;
         });
         builder.addCase(fetchAllGenres.rejected, (state, action) =>
         {
