@@ -14,3 +14,10 @@ export const fetchHotMovies = createAsyncThunk("clientMovie/fetchHotMovies",
         const response = BASE_URL[ HTTP_METHOD.GET ](`movies/hot`);
         return response;
     });
+
+export const searchClientMovies = createAsyncThunk("clientMovie/searchClientMovies",
+    async ({ searchValue, searchOption }) =>
+    {
+        const response = BASE_URL[ HTTP_METHOD.GET ](`movies/search?searchValue=${ searchValue }&searchOption=${ searchOption }`);
+        return response;
+    });
