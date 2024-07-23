@@ -6,14 +6,16 @@ import BASE_URL from "../../api";
 
 
 
-export const fetchAllBanner = createAsyncThunk("banner/fetchAllBanner", async () => {
+export const fetchAllBanner = createAsyncThunk("banner/fetchAllBanner", async () =>
+{
   const token = Cookies.get("token");
-  if (!token) {
+  if (!token)
+  {
     throw new Error("Token not found");
   }
-  const response = await BASE_URL[HTTP_METHOD.GET](`/banner`, {
+  const response = await BASE_URL[ HTTP_METHOD.GET ](`/banner`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${ token }`,
     },
   });
 
@@ -21,14 +23,16 @@ export const fetchAllBanner = createAsyncThunk("banner/fetchAllBanner", async ()
 });
 export const createBanner = createAsyncThunk(
   "banner/createBanner",
-  async (bannerCreate) => {
+  async (bannerCreate) =>
+  {
     const token = Cookies.get("token");
-    if (!token) {
+    if (!token)
+    {
       throw new Error("Token not found");
     }
-    const response = await BASE_URL[HTTP_METHOD.POST](`/banner`, bannerCreate, {
+    const response = await BASE_URL[ HTTP_METHOD.POST ](`/banner`, bannerCreate, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${ token }`,
       },
     });
     return response.data.result;
@@ -36,14 +40,16 @@ export const createBanner = createAsyncThunk(
 );
 export const deleteBanner = createAsyncThunk(
   "banner/deleteBanner",
-  async (bannerDelete) => {
+  async (bannerDelete) =>
+  {
     const token = Cookies.get("token");
-    if (!token) {
+    if (!token)
+    {
       throw new Error("Token not found");
     }
-    const response = await BASE_URL[HTTP_METHOD.DELETE](`/banner`, {
+    const response = await BASE_URL[ HTTP_METHOD.DELETE ](`/banner`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${ token }`,
       },
       data: bannerDelete,
     });
@@ -54,17 +60,19 @@ export const deleteBanner = createAsyncThunk(
 
 export const updateBanner = createAsyncThunk(
   "banner/updateBanner",
-  async (bannerUpdate) => {
+  async (bannerUpdate) =>
+  {
     const token = Cookies.get("token");
-    if (!token) {
+    if (!token)
+    {
       throw new Error("Token not found");
     }
-    const response = await BASE_URL[HTTP_METHOD.PUT](`/banner`, bannerUpdate, {
+    const response = await BASE_URL[ HTTP_METHOD.PUT ](`/banner`, bannerUpdate, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${ token }`,
       },
     });
-    console.log("response",response.data);
+    console.log("response", response.data);
     return response.data.result;
   }
 );
