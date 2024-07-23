@@ -19,6 +19,7 @@ import showtimeSlice from "./adminSlices/showtimeSlice";
 import seatClientSlice from "./clientSlices/seatClientSlice";
 import clientBannerSlice from "./clientSlices/clientBannerSlice";
 import clientMovieSlice from "./clientSlices/clientMovieSlice";
+import clientReviewSlice from "./clientSlices/clientReviewSlice";
 
 const rootReducers = combineReducers({
   movie: movieSlice,
@@ -36,6 +37,8 @@ const rootReducers = combineReducers({
   showSeatClient: seatClientSlice,
   clientBanner: clientBannerSlice,
   clientMovie: clientMovieSlice,
+
+  clientReview: clientReviewSlice,
 
 });
 export default rootReducers;

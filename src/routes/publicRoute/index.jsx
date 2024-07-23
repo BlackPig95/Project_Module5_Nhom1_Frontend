@@ -1,5 +1,10 @@
 import React from "react";
+
 import MovieDetailPage from "../../pages/admin/movieDetail/movieDetail";
+
+import MovieDetail from "../../pages/client/movieDetail/MovieDetail";
+import HotMovie from "../../pages/client/hotMovieList/HotMovie";
+
 
 const Home = React.lazy(() => import("../../pages/client/Home"));
 // import Home from "../../pages/client/Home";
@@ -43,6 +48,10 @@ const publicRoutes = [
     path: "*",
     element: <PageNotFound />,
   },
+  {
+    path: "/movie-hot",
+    element: <HotMovie />
+  }
 ];
 
 export default publicRoutes;

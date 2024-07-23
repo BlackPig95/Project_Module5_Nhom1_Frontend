@@ -8,3 +8,9 @@ export const fetchClientMovies = createAsyncThunk("clientMovie/fetchClientMovies
         const response = BASE_URL[ HTTP_METHOD.GET ](`movies`);
         return response;
     });
+export const fetchHotMovies = createAsyncThunk("clientMovie/fetchHotMovies",
+    async () =>
+    {
+        const response = BASE_URL[ HTTP_METHOD.GET ](`movies/hot`);
+        return response;
+    });

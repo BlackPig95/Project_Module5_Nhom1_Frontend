@@ -27,7 +27,7 @@ function Carousel()
       } }
       autoplay={ {
         delay: 3000,
-        disableOnInteraction: true,
+        disableOnInteraction: false,
       } }
       navigation={ true }
       modules={ [ Autoplay, Pagination, Navigation ] }
@@ -35,7 +35,7 @@ function Carousel()
     >
       { bannerList?.map(banner =>
       {
-        return (<SwiperSlide key={ banner.id }><img src={ banner.imageUrl } alt={ banner.title } /></SwiperSlide>);
+        return (<SwiperSlide key={ banner.id }><img className="w-full h-auto" src={ banner.imageUrl } alt={ banner.title } /></SwiperSlide>);
       }
       ) }
     </Swiper>

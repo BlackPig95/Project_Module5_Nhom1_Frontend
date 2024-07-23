@@ -1,30 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LOAD_STATUS } from "../../../constants";
-import { fetchAllBannerClient } from "../../../services/clientServices/clientBannerServices";
+import { fetchAllClientReviews } from "../../../services/clientServices/clientRevieService";
 
 const initialState = {
     loading: LOAD_STATUS.IDLE,
     data: [],
     error: null,
 };
-const clientBannerSlice = createSlice(
+const clientReviewSlice = createSlice(
     {
-        name: "clientBanner",
+        name: "clientReview",
         initialState,
         reducers: {},
         extraReducers: (builer) =>
         {
-            builer.addCase(fetchAllBannerClient.pending, state =>
+            builer.addCase(fetchAllClientReviews.pending, state =>
             {
                 state.loading = LOAD_STATUS.PENDING;
             }
             );
-            builer.addCase(fetchAllBannerClient.fulfilled, (state, action) =>
+            builer.addCase(fetchAllClientReviews.fulfilled, (state, action) =>
             {
                 state.loading = LOAD_STATUS.FULLFILLED;
                 state.data = action.payload;
             });
-            builer.addCase(fetchAllBannerClient.rejected, (state, action) =>
+            builer.addCase(fetchAllClientReviews.rejected, (state, action) =>
             {
                 state.loading = LOAD_STATUS.REJECTED;
                 state.data = action.payload;
@@ -32,4 +32,4 @@ const clientBannerSlice = createSlice(
         }
     }
 );
-export default clientBannerSlice.reducer;
+export default clientReviewSlice.reducer;

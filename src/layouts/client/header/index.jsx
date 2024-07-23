@@ -120,7 +120,7 @@ export default function Header()
           Giá vé
         </a>
         <a href="#" className="nav-item">
-          Liên hoan phim
+          Phim hot trong tháng
         </a>
         <a href="#" className="nav-item">
           Giới thiệu
