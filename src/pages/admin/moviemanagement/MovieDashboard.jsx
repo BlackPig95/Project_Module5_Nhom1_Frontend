@@ -93,11 +93,11 @@ function MovieDashboard()
         }
         if (movieDetail !== null)
         {
-            navigate(`../admin/movie-detail/${ movieDetail.id }`, { replace: true });
+            navigate(`../movie-detail/${ movieDetail.id }`, { replace: true });
         }
         if (editMovieId !== null)
         {
-            navigate(`../admin/movie-edit/${ editMovieId }`, { replace: true });
+            navigate(`../movie-edit/${ editMovieId }`, { replace: true });
         }
     }, [ page, movieDetail, editMovieId, searchValue, sortOption, deletedMovieId, sortDirection ]);
     return (
