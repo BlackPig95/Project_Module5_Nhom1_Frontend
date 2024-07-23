@@ -3,9 +3,9 @@ import BASE_URL from "../../api";
 import { HTTP_METHOD } from "../../constants";
 
 export const fetchAllMovies = createAsyncThunk("movie/fetchAllMovies",
-    async ({ page, sortOption, searchValue }) =>
+    async ({ page, sortOption, searchValue, sortDirection }) =>
     {
-        const response = await BASE_URL[ HTTP_METHOD.GET ](`admin/movies?page=${ page - 1 }&sort=${ sortOption }&title=${ searchValue }`);
+        const response = await BASE_URL[ HTTP_METHOD.GET ](`admin/movies?page=${ page - 1 }&sort=${ sortOption },${ sortDirection }&title=${ searchValue }`);
         return response;
     }
 );
@@ -47,9 +47,9 @@ export const showMovieDetails = createAsyncThunk("movie/showMovieDetails",
     }
 );
 export const searchMovie = createAsyncThunk("movie/searchMovie",
-    async ({ searchValue, sortOption, page }) =>
+    async ({ searchValue, sortOption, page, sortDirection }) =>
     {
-        const response = await BASE_URL[ HTTP_METHOD.GET ](`admin/movies/name/${ searchValue }?sort=${ sortOption }&page=${ page - 1 }`);
+        const response = await BASE_URL[ HTTP_METHOD.GET ](`admin/movies/name/${ searchValue }?sort=${ sortOption },${ sortDirection }&page=${ page - 1 }`);
         return response;
     }
 );
