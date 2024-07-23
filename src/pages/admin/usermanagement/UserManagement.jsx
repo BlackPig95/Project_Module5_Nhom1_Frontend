@@ -11,6 +11,8 @@ import {
   Paper,
   CircularProgress,
   TextField,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { LOAD_STATUS } from "../../../constants";
 import {
@@ -25,10 +27,12 @@ export default function UserManagement() {
   const { data, loading, error } = useSelector((state) => state.user);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [sortOption, setSortOption] = useState("id");
+  const [sortDirection, setSortDirection] = useState("ASC");
 
   useEffect(() => {
-    dispatch(fetchAllUsers({ page, search }));
-  }, [dispatch, page, search]);
+    dispatch(fetchAllUsers({ page, search, sortOption, sortDirection }));
+  }, [dispatch, page, search, sortOption, sortDirection]);
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -36,6 +40,14 @@ export default function UserManagement() {
 
   const handleChangeSearch = (e) => {
     setSearch(e.target.value);
+  };
+
+  const handleSortOptionChange = (e) => {
+    setSortOption(e.target.value);
+  };
+
+  const handleSortDirectionChange = (e) => {
+    setSortDirection(e.target.value);
   };
 
   const handleStatusToggle = (userId) => {
@@ -52,6 +64,18 @@ export default function UserManagement() {
         onChange={handleChangeSearch}
         value={search}
       />
+      <div>
+        <label>Sắp xếp theo: </label>
+        <Select value={sortOption} onChange={handleSortOptionChange}>
+          <MenuItem value="id">ID</MenuItem>
+          <MenuItem value="username">Username</MenuItem>
+          <MenuItem value="email">Email</MenuItem>
+        </Select>
+        <Select value={sortDirection} onChange={handleSortDirectionChange}>
+          <MenuItem value="ASC">Ascending</MenuItem>
+          <MenuItem value="DESC">Descending</MenuItem>
+        </Select>
+      </div>
       {error && <p>{error}</p>}
       {loading === LOAD_STATUS.FULLFILLED ? (
         <>
