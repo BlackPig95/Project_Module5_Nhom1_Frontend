@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Pagination,
   Paper,
@@ -13,23 +13,23 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchAllDiscounts,
-  deleteDiscount,
-} from "../../../services/adminServices/discountServices";
+  deleteNews,
+  fetchAllNews,
+} from "../../../services/adminServices/newsServices";
 import { LOAD_STATUS } from "../../../constants";
-import FormAddDiscount from "../../../components/adminComponents/discount/FormAddDiscount";
-import FormEditDiscount from "../../../components/adminComponents/discount/FormEditDiscount";
+import FormAddNews from "../../../components/adminComponents/news/FormAddNews";
+import FormEditNews from "../../../components/adminComponents/news/FormEditNews";
 
-export default function VoucherManagement() {
+export default function NewsManagement() {
   const dispatch = useDispatch();
-  const { data, loading, error } = useSelector((state) => state.discount);
+  const { data, loading, error } = useSelector((state) => state.news);
   const [page, setPage] = useState(1);
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
-  const [selectedDiscount, setSelectedDiscount] = useState(null);
+  const [selectedNews, setSelectedNews] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchAllDiscounts({ page }));
+    dispatch(fetchAllNews({ page }));
   }, [dispatch, page]);
 
   const handlePageChange = (event, value) => {
@@ -40,38 +40,38 @@ export default function VoucherManagement() {
     setShowAddForm(!showAddForm);
   };
 
-  const handleShowEditForm = (discount) => {
-    setSelectedDiscount(discount);
+  const handleShowEditForm = (news) => {
+    setSelectedNews(news);
     setShowEditForm(true);
   };
 
   const handleDelete = (id) => {
     if (window.confirm("Xóa nhé?")) {
-      dispatch(deleteDiscount(id)).then(() => {
-        dispatch(fetchAllDiscounts({ page }));
+      dispatch(deleteNews(id)).then(() => {
+        dispatch(fetchAllNews({ page }));
       });
     }
   };
 
   const handleFormSuccess = () => {
-    dispatch(fetchAllDiscounts({ page })); // reload data after success
+    dispatch(fetchAllNews({ page }));
   };
 
   return (
     <main className="ra-listuser">
-      <h1 className="text-[30px]">List voucher</h1>
+      <h1 className="text-[30px]">List News</h1>
       <Button variant="contained" onClick={handleShowAddForm}>
-        {showAddForm ? "Đóng Form" : "Thêm Discount"}
+        {showAddForm ? "Đóng Form" : "Thêm News"}
       </Button>
       {showAddForm && (
-        <FormAddDiscount
+        <FormAddNews
           onSuccess={handleFormSuccess}
           onClose={handleShowAddForm}
         />
       )}
-      {showEditForm && selectedDiscount && (
-        <FormEditDiscount
-          discount={selectedDiscount}
+      {showEditForm && selectedNews && (
+        <FormEditNews
+          news={selectedNews}
           onSuccess={() => {
             handleFormSuccess();
             setShowEditForm(false);
@@ -87,46 +87,42 @@ export default function VoucherManagement() {
               <TableHead className="bg-pink-500">
                 <TableRow>
                   <TableCell align="center">STT</TableCell>
-                  <TableCell align="center">Mã Code</TableCell>
-                  <TableCell align="center">Miêu tả</TableCell>
-                  <TableCell align="center">Chiết khấu</TableCell>
-                  <TableCell align="center">Sử dụng</TableCell>
-                  <TableCell align="center">Bắt đầu</TableCell>
-                  <TableCell align="center">Kết thúc</TableCell>
+                  <TableCell align="center">Nội dung</TableCell>
+                  <TableCell align="center">Tiêu đề</TableCell>
+                  <TableCell align="center">Ngày tạo</TableCell>
+                  <TableCell align="center">Ngày sửa</TableCell>
+                  <TableCell align="center">ImageUrl</TableCell>
                   <TableCell align="center">Chức năng</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data?.content?.map((discount, index) => (
-                  <TableRow key={discount.id}>
+                {data?.content?.map((news, index) => (
+                  <TableRow key={news.id}>
                     <TableCell align="center">
                       {data && data.size * (page - 1) + index + 1}
                     </TableCell>
-                    <TableCell align="center">{discount.code}</TableCell>
-                    <TableCell align="center">{discount.description}</TableCell>
+                    <TableCell align="center">{news.content}</TableCell>
+                    <TableCell align="center">{news.title}</TableCell>
                     <TableCell align="center">
-                      {discount.discountPercentage}%
+                      {new Date(news.createdAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell align="center">
-                      {discount.isUsed ? "Yes" : "No"}
+                      {new Date(news.updatedAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell align="center">
-                      {new Date(discount.validFrom).toLocaleDateString()}
-                    </TableCell>
-                    <TableCell align="center">
-                      {new Date(discount.validTo).toLocaleDateString()}
+                      <img src={news.imageUrl} alt="news" width="100" />
                     </TableCell>
                     <TableCell align="center">
                       <Button
                         variant="contained"
-                        onClick={() => handleShowEditForm(discount)}
+                        onClick={() => handleShowEditForm(news)}
                       >
                         Chỉnh sửa
                       </Button>
                       <Button
                         variant="contained"
                         color="secondary"
-                        onClick={() => handleDelete(discount.id)}
+                        onClick={() => handleDelete(news.id)}
                       >
                         Xóa
                       </Button>
@@ -137,7 +133,7 @@ export default function VoucherManagement() {
             </Table>
           </TableContainer>
           <Pagination
-            count={Math.ceil(data.totalElements / data.size)}
+            count={data.totalPages}
             page={page}
             onChange={handlePageChange}
             color="primary"
