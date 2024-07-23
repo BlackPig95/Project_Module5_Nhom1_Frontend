@@ -12,8 +12,8 @@ export const fetchAllCountries = createAsyncThunk("country/fetchAllCountries",
 export const fetchAllGenres = createAsyncThunk("genre/fetchAllGenres",
     async () =>
     {
-        const response = await BASE_URL[ HTTP_METHOD.GET ]("genres");
-        return response;
+        const response = await BASE_URL[HTTP_METHOD.GET]("/genres");
+        return response.data;
     }
 );
 export const fetchAllUserAdvices = createAsyncThunk("userAdvices/fetchAllUserAdvices",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MenuOutlined } from "@ant-design/icons";
 import "./index.scss";
 import RegisterForm from "../../../pages/client/register";
@@ -23,6 +23,15 @@ export default function Header()
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
+
+  // useEffect(() => {
+  //   const token = Cookies.get("token"); // Sử dụng js-cookie
+  //   if (token) {
+  //     const parsedToken = JSON.parse(token);
+  //     dispatch(loadUserFromCookie(parsedToken));
+  //   }
+  // }, [dispatch]);
+
   useEffect(() =>
   {
     const token = Cookies.get("token");
@@ -42,6 +51,7 @@ export default function Header()
       setUserData(auth?.data);
     }
   }, [ auth ]);
+
 
   const toggleMenu = () =>
   {
