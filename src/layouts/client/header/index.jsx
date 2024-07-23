@@ -10,63 +10,74 @@ import Cookies from "js-cookie"; // Sử dụng js-cookie
 import { logout } from "../../../redux/slices/clientSlices/authSlice";
 import { loadUserFromCookie } from "../../../services/clientServices/authService";
 
-export default function Header() {
-  const [menuVisible, setMenuVisible] = useState(false);
-  const [showLoginForm, setShowLoginForm] = useState(false);
-  const [showRegisterForm, setShowRegisterForm] = useState(false);
-  const [showForgotPasswordForm, setShowForgotPasswordForm] = useState(false);
-  const [userData, setUserData] = useState(() =>
+export default function Header()
+{
+  const [ menuVisible, setMenuVisible ] = useState(false);
+  const [ showLoginForm, setShowLoginForm ] = useState(false);
+  const [ showRegisterForm, setShowRegisterForm ] = useState(false);
+  const [ showForgotPasswordForm, setShowForgotPasswordForm ] = useState(false);
+  const [ userData, setUserData ] = useState(() =>
     JSON.parse(localStorage.getItem("user"))
   );
 
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     const token = Cookies.get("token");
-    if (token) {
+    if (token)
+    {
       const parsedToken = token;
       dispatch(loadUserFromCookie(parsedToken));
     }
     const user = JSON.parse(localStorage.getItem("user"));
     setUserData(user);
-  }, [dispatch]);
+  }, [ dispatch ]);
 
-  useEffect(() => {
-    if (auth?.data) {
+  useEffect(() =>
+  {
+    if (auth?.data)
+    {
       setUserData(auth?.data);
     }
-  }, [auth]);
+  }, [ auth ]);
 
-  const toggleMenu = () => {
+  const toggleMenu = () =>
+  {
     setMenuVisible(!menuVisible);
   };
 
-  const openLoginForm = () => {
+  const openLoginForm = () =>
+  {
     setShowLoginForm(true);
     setShowRegisterForm(false);
     setShowForgotPasswordForm(false);
   };
 
-  const openRegisterForm = () => {
+  const openRegisterForm = () =>
+  {
     setShowLoginForm(false);
     setShowRegisterForm(true);
     setShowForgotPasswordForm(false);
   };
 
-  const openForgotPasswordForm = () => {
+  const openForgotPasswordForm = () =>
+  {
     setShowLoginForm(false);
     setShowRegisterForm(false);
     setShowForgotPasswordForm(true);
   };
 
-  const closeForm = () => {
+  const closeForm = () =>
+  {
     setShowLoginForm(false);
     setShowRegisterForm(false);
     setShowForgotPasswordForm(false);
   };
 
-  const handleLogout = () => {
+  const handleLogout = () =>
+  {
     dispatch(logout());
     Cookies.remove("token");
     localStorage.removeItem("user");
@@ -75,14 +86,14 @@ export default function Header() {
   };
 
   return (
-    <header className="header">
+    <header className="header px-4 h-20 flex flex-row justify-between">
       <div className="header-logo">
-        <img src="path-to-your-logo.png" alt="Logo" />
+        <img src="https://cdnphoto.dantri.com.vn/COm1qksauO2sqAC-gVVI2DdH_1I=/thumb_w/1020/2023/01/24/khoa-hocdocx-1674520013659.png" alt="Logo" />
       </div>
-      <div className="header-menu-icon" onClick={toggleMenu}>
+      <div className="header-menu-icon" onClick={ toggleMenu }>
         <MenuOutlined />
       </div>
-      <nav className={`header-nav ${menuVisible ? "visible" : ""}`}>
+      <nav className={ `header-nav ${ menuVisible ? "visible" : "" } ` }>
         <a href="#" className="nav-item">
           Trang chủ
         </a>
@@ -106,37 +117,37 @@ export default function Header() {
         </a>
       </nav>
       <div className="header-actions">
-        {Cookies.get("token") && userData ? (
+        { Cookies.get("token") && userData ? (
           <>
             <span className="text-white">
-              Tên đăng nhập: {userData.fullName}
+              Tên đăng nhập: { userData.fullName }
             </span>
-            <Button onClick={handleLogout} type="primary">
+            <Button onClick={ handleLogout } type="primary">
               Đăng xuất
             </Button>
           </>
         ) : (
           <>
-            <button className="register" onClick={openRegisterForm}>
+            <button className="register" onClick={ openRegisterForm }>
               Đăng ký
             </button>
-            <button className="login" onClick={openLoginForm}>
+            <button className="login" onClick={ openLoginForm }>
               Đăng nhập
             </button>
           </>
-        )}
+        ) }
       </div>
-      {showLoginForm && (
+      { showLoginForm && (
         <LoginForm
-          closeForm={closeForm}
-          openRegisterForm={openRegisterForm}
-          openForgotPasswordForm={openForgotPasswordForm}
+          closeForm={ closeForm }
+          openRegisterForm={ openRegisterForm }
+          openForgotPasswordForm={ openForgotPasswordForm }
         />
-      )}
-      {showRegisterForm && (
-        <RegisterForm closeForm={closeForm} openLoginForm={openLoginForm} />
-      )}
-      {showForgotPasswordForm && <ForgotPasswordForm closeForm={closeForm} />}
+      ) }
+      { showRegisterForm && (
+        <RegisterForm closeForm={ closeForm } openLoginForm={ openLoginForm } />
+      ) }
+      { showForgotPasswordForm && <ForgotPasswordForm closeForm={ closeForm } /> }
     </header>
   );
 }

@@ -20,12 +20,10 @@ const rootReducers = combineReducers({
   genre: genreSlice,
   userAdvice: userAdviceSlice,
   user: userSlice,
-
   discount: discountSlice,
-
   seat: seatSlice,
   banner: bannerSlice,
-  review: reviewSlice
+  review: reviewSlice,
   room: roomSlice,
 
 });

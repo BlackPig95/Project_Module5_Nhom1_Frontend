@@ -1,9 +1,9 @@
-import { Navigation, Pagination } from "swiper/modules";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-
+import '../carousel/carousel.scss';
 
 function Carousel()
 {
@@ -15,15 +15,21 @@ function Carousel()
       pagination={ {
         clickable: true,
       } }
+      autoplay={ {
+        delay: 3000,
+        disableOnInteraction: true,
+      } }
       navigation={ true }
-      modules={ [ Pagination, Navigation ] }
-      className="mySwiper"
+      modules={ [ Autoplay, Pagination, Navigation ] }
+      className="mySwiper z-10"
     >
-      <SwiperSlide><img width={ 200 } height={ 200 } src="https://cdnphoto.dantri.com.vn/COm1qksauO2sqAC-gVVI2DdH_1I=/thumb_w/1020/2023/01/24/khoa-hocdocx-1674520013659.png" alt="image" /></SwiperSlide>
-      <SwiperSlide><img width={ 200 } height={ 200 } src="https://cdnphoto.dantri.com.vn/COm1qksauO2sqAC-gVVI2DdH_1I=/thumb_w/1020/2023/01/24/khoa-hocdocx-1674520013659.png" alt="image" /></SwiperSlide>
-      <SwiperSlide><img width={ 200 } height={ 200 } src="https://cdnphoto.dantri.com.vn/COm1qksauO2sqAC-gVVI2DdH_1I=/thumb_w/1020/2023/01/24/khoa-hocdocx-1674520013659.png" alt="image" /></SwiperSlide>
-      <SwiperSlide><img width={ 200 } height={ 200 } src="https://cdnphoto.dantri.com.vn/COm1qksauO2sqAC-gVVI2DdH_1I=/thumb_w/1020/2023/01/24/khoa-hocdocx-1674520013659.png" alt="image" /></SwiperSlide>
+      <SwiperSlide><img className="w-full" src="https://cdnphoto.dantri.com.vn/COm1qksauO2sqAC-gVVI2DdH_1I=/thumb_w/1020/2023/01/24/khoa-hocdocx-1674520013659.png" alt="image" /></SwiperSlide>
+      <SwiperSlide><img className="w-full" src="https://cdnphoto.dantri.com.vn/COm1qksauO2sqAC-gVVI2DdH_1I=/thumb_w/1020/2023/01/24/khoa-hocdocx-1674520013659.png" alt="image" /></SwiperSlide>
+      <SwiperSlide><img className="w-full" src="https://cdnphoto.dantri.com.vn/COm1qksauO2sqAC-gVVI2DdH_1I=/thumb_w/1020/2023/01/24/khoa-hocdocx-1674520013659.png" alt="image" /></SwiperSlide>
+      <SwiperSlide><img className="w-full" src="https://cdnphoto.dantri.com.vn/COm1qksauO2sqAC-gVVI2DdH_1I=/thumb_w/1020/2023/01/24/khoa-hocdocx-1674520013659.png" alt="image" /></SwiperSlide>
     </Swiper>
+
+
   );
 }
 
