@@ -11,6 +11,7 @@ import BannerManagement from "../../../pages/admin/bannerManagement/BannerManage
 import ReviewManagement from "../../../pages/admin/reviewManagement/ReviewManagement";
 import RoomManagement from "../../../pages/admin/roomManagement/RoomManagement";
 import LayoutIndex from "../../../layouts/admin/layoutIndex";
+import NewsManagement from "../../../pages/admin/newsManagement/NewsManagement";
 
 const Dashboard = React.lazy(() => import("../../../pages/admin/Dashboard"));
 const PaymentManagement = React.lazy(() =>
@@ -26,7 +27,8 @@ const privateRoutes = [
   {
     path: "/admin",
     element: <LayoutIndex />,
-    children: [ //Trang layout admin, ai cần nhét component nào vào khu vực quản lý ở giữa thì viết object con vào trong phần này
+    children: [
+      //Trang layout admin, ai cần nhét component nào vào khu vực quản lý ở giữa thì viết object con vào trong phần này
       {
         path: "movie-dashboard",
         element: <MovieDashboard />,
@@ -46,6 +48,10 @@ const privateRoutes = [
       {
         path: "voucher-management",
         element: <VoucherManagement />,
+      },
+      {
+        path: "news-management",
+        element: <NewsManagement />,
       },
       {
         path: "room-dashboard",
@@ -71,7 +77,8 @@ const privateRoutes = [
         path: "/admin/ticket-management",
         element: <TicketManagement />,
       },
-    ]
-  } ];
+    ],
+  },
+];
 
 export default privateRoutes;
