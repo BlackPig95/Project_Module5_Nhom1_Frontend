@@ -4,9 +4,19 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import '../carousel/carousel.scss';
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchAllBannerClient } from "../../../services/clientServices/clientBannerServices";
 
 function Carousel()
 {
+  const dispatch = useDispatch();
+  const clientBannerData = useSelector(state => state.clientBanner);
+  useEffect(() =>
+  {
+    dispatch(fetchAllBannerClient());
+  }, []);
+  const bannerList = clientBannerData?.data?.data?.data;
   return (
     <Swiper
       slidesPerView={ 1 }
@@ -23,10 +33,11 @@ function Carousel()
       modules={ [ Autoplay, Pagination, Navigation ] }
       className="mySwiper z-10"
     >
-      <SwiperSlide><img className="w-full" src="https://cdnphoto.dantri.com.vn/COm1qksauO2sqAC-gVVI2DdH_1I=/thumb_w/1020/2023/01/24/khoa-hocdocx-1674520013659.png" alt="image" /></SwiperSlide>
-      <SwiperSlide><img className="w-full" src="https://cdnphoto.dantri.com.vn/COm1qksauO2sqAC-gVVI2DdH_1I=/thumb_w/1020/2023/01/24/khoa-hocdocx-1674520013659.png" alt="image" /></SwiperSlide>
-      <SwiperSlide><img className="w-full" src="https://cdnphoto.dantri.com.vn/COm1qksauO2sqAC-gVVI2DdH_1I=/thumb_w/1020/2023/01/24/khoa-hocdocx-1674520013659.png" alt="image" /></SwiperSlide>
-      <SwiperSlide><img className="w-full" src="https://cdnphoto.dantri.com.vn/COm1qksauO2sqAC-gVVI2DdH_1I=/thumb_w/1020/2023/01/24/khoa-hocdocx-1674520013659.png" alt="image" /></SwiperSlide>
+      { bannerList?.map(banner =>
+      {
+        return (<SwiperSlide key={ banner.id }><img src={ banner.imageUrl } alt={ banner.title } /></SwiperSlide>);
+      }
+      ) }
     </Swiper>
 
 

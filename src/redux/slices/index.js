@@ -12,6 +12,7 @@ import bannerSlice from "./adminSlices/bannerSlice";
 import reviewSlice from "./adminSlices/reviewSlice";
 
 import roomSlice from "./adminSlices/roomSlice";
+import clientBannerSlice from "./clientSlices/clientBannerSlice";
 
 
 const rootReducers = combineReducers({
@@ -25,6 +26,6 @@ const rootReducers = combineReducers({
   banner: bannerSlice,
   review: reviewSlice,
   room: roomSlice,
-
+  clientBanner: clientBannerSlice,
 });
 export default rootReducers;
