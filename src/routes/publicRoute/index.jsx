@@ -4,6 +4,7 @@ import HotMovie from "../../pages/client/hotMovieList/HotMovie";
 import SearchMovie from "../../pages/client/searchMovie/SearchMovie";
 
 import AllMoviePable from "../../pages/client/allMoviePageable/AllMoviePageable";
+import BookingHistory from "../../pages/client/bookingHistory/BookingHistory";
 
 
 const Home = React.lazy(() => import("../../pages/client/Home"));
@@ -60,6 +61,10 @@ const publicRoutes = [
   {
     path: "/movie-all",
     element: <AllMoviePable />
+  },
+  {
+    path: "/booking-history",
+    element: <BookingHistory />
   }
 
 ];
