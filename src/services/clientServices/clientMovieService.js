@@ -21,3 +21,9 @@ export const searchClientMovies = createAsyncThunk("clientMovie/searchClientMovi
         const response = BASE_URL[ HTTP_METHOD.GET ](`movies/search?searchValue=${ searchValue }&searchOption=${ searchOption }`);
         return response;
     });
+export const fetchMoviesPageable = createAsyncThunk("clientMovie/fetchMoviesPageable",
+    async ({ pageNumber, itemsPerPage }) =>
+    {
+        const response = BASE_URL[ HTTP_METHOD.GET ](`movies/all/${ pageNumber - 1 }?itemsPerPage=${ itemsPerPage }`);
+        return response;
+    });

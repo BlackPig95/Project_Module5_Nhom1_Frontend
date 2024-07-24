@@ -9,7 +9,7 @@ function MovieCard({ movieGenres, movieName, userAdvice, releaseDate, movieImage
                     loading="lazy"
                     decoding="async"
                     data-nimg="fill"
-                    className="object-cover object-center rounded-none hover:scale-110 transition duration-500"
+                    className="object-fill object-center rounded-none hover:scale-110 transition duration-500"
                     sizes="230px"
                     src={ movieImage }
                     style={ {
