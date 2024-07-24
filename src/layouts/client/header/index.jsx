@@ -1,16 +1,19 @@
+import React from "react";
 import { useEffect, useState } from "react";
-import { MenuOutlined } from "@ant-design/icons";
+import { MenuOutlined, DownOutlined, UserOutlined } from "@ant-design/icons";
 import "./index.scss";
 import RegisterForm from "../../../pages/client/register";
 import LoginForm from "../../../pages/client/login";
 import ForgotPasswordForm from "../../../pages/client/forgotPassword";
 import { useDispatch, useSelector } from "react-redux";
-import { Button } from "antd";
+import { Button, Dropdown, Space, Menu, Divider, theme } from "antd";
 import Cookies from "js-cookie"; // Sử dụng js-cookie
 import { logout } from "../../../redux/slices/clientSlices/authSlice";
 import { loadUserFromCookie } from "../../../services/clientServices/authService";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function Header() {
+  const navigate = useNavigate();
   const [menuVisible, setMenuVisible] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
@@ -21,14 +24,6 @@ export default function Header() {
 
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   const token = Cookies.get("token"); // Sử dụng js-cookie
-  //   if (token) {
-  //     const parsedToken = JSON.parse(token);
-  //     dispatch(loadUserFromCookie(parsedToken));
-  //   }
-  // }, [dispatch]);
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -80,6 +75,31 @@ export default function Header() {
     localStorage.removeItem("user");
     setUserData(null);
     closeForm();
+    navigate("/");
+  };
+
+  const menuItems = [
+    {
+      key: "1",
+      label: (
+        <NavLink className="link" to="/user/user-detail">
+          Thông tin cá nhân
+        </NavLink>
+      ),
+    },
+  ];
+
+  const { useToken } = theme;
+  const { token } = useToken();
+
+  const contentStyle = {
+    backgroundColor: token.colorBgElevated,
+    borderRadius: token.borderRadiusLG,
+    boxShadow: token.boxShadowSecondary,
+  };
+
+  const menuStyle = {
+    boxShadow: "none",
   };
 
   return (
@@ -118,14 +138,28 @@ export default function Header() {
       </nav>
       <div className="header-actions">
         {Cookies.get("token") && userData ? (
-          <>
-            <span className="text-white">
-              Tên đăng nhập: {userData.fullName}
-            </span>
-            <Button onClick={handleLogout} type="primary">
-              Đăng xuất
-            </Button>
-          </>
+          <Dropdown
+            overlay={<Menu items={menuItems} />}
+            dropdownRender={(menu) => (
+              <div style={contentStyle}>
+                {React.cloneElement(menu, { style: menuStyle })}
+                <Divider style={{ margin: 0 }} />
+                <Space style={{ padding: 8 }}>
+                  <Button type="primary" onClick={handleLogout}>
+                    Đăng xuất
+                  </Button>
+                </Space>
+              </div>
+            )}
+          >
+            <a onClick={(e) => e.preventDefault()}>
+              <Space className="text-white">
+                <UserOutlined className="text-white" />
+                {userData.fullName}
+                <DownOutlined />
+              </Space>
+            </a>
+          </Dropdown>
         ) : (
           <>
             <button className="register" onClick={openRegisterForm}>
