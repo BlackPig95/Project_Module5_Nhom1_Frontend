@@ -12,6 +12,7 @@ import ReviewManagement from "../../../pages/admin/reviewManagement/ReviewManage
 import RoomManagement from "../../../pages/admin/roomManagement/RoomManagement";
 import LayoutIndex from "../../../layouts/admin/layoutIndex";
 import NewsManagement from "../../../pages/admin/newsManagement/NewsManagement";
+import TickePricetManagement from "../../../pages/admin/ticketPriceManagement/TickePricetManagement";
 
 const Dashboard = React.lazy(() => import("../../../pages/admin/Dashboard"));
 const PaymentManagement = React.lazy(() =>
@@ -52,6 +53,10 @@ const privateRoutes = [
       {
         path: "news-management",
         element: <NewsManagement />,
+      },
+      {
+        path: "ticket-price-management",
+        element: <TickePricetManagement />,
       },
       {
         path: "room-dashboard",
