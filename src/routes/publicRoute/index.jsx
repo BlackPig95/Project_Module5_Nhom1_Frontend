@@ -2,8 +2,10 @@ import React from "react";
 import MovieDetail from "../../pages/client/movieDetail/MovieDetail";
 import HotMovie from "../../pages/client/hotMovieList/HotMovie";
 import SearchMovie from "../../pages/client/searchMovie/SearchMovie";
+
 import AllMoviePable from "../../pages/client/allMoviePageable/AllMoviePageable";
 import BookingHistory from "../../pages/client/bookingHistory/BookingHistory";
+
 
 const Home = React.lazy(() => import("../../pages/client/Home"));
 // import Home from "../../pages/client/Home";
@@ -11,7 +13,6 @@ const Movies = React.lazy(() => import("../../pages/client/Movies"));
 // const MoviesDetail = React.lazy(() =>
 //   import("../../pages/client/movieDetail/MovieDetail")
 // );
-
 
 const Payment = React.lazy(() => import("../../pages/client/Payment"));
 const TicketPrice = React.lazy(() => import("../../pages/client/TicketPrice"));
@@ -31,6 +32,10 @@ const publicRoutes = [
     path: "/movies-detail",
     element: <MovieDetail />,
   },
+  // {
+  //   path: "/user-detail",
+  //   element: <UserDetail />,
+  // },
   {
     path: "/payment",
     element: <Payment />,
@@ -46,10 +51,11 @@ const publicRoutes = [
   },
   {
     path: "/movie-hot",
-    element: <HotMovie />
+    element: <HotMovie />,
   },
   {
     path: "/movie-search",
+
     element: <SearchMovie />
   },
   {
@@ -60,6 +66,7 @@ const publicRoutes = [
     path: "/booking-history",
     element: <BookingHistory />
   }
+
 ];
 
 export default publicRoutes;
