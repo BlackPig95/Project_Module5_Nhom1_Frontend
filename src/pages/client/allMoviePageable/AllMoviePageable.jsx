@@ -43,10 +43,10 @@ function AllMoviePable()
                         </select>
                     </div>
                 </div>
-                <div className="grid grid-cols-5 grid-rows-4 gap-4 p-4">
+                <div className="grid grid-cols-5 gap-4 p-4">
                     { pageAbleMovieList?.content.map(movie =>
                     {
-                        return (<AllMovieCardItem />);
+                        return (<AllMovieCardItem movie={ movie } />);
                     }) }
                 </div>
             </div>

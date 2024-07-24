@@ -3,7 +3,8 @@ import { useDispatch } from "react-redux";
 import { Button, TextField } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
-import {
+import
+{
   updateNews,
   fetchAllNews,
 } from "../../../services/adminServices/newsServices";
@@ -20,89 +21,107 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export default function FormEditNews({ news, onSuccess, onClose }) {
-  const [formValues, setFormValues] = useState({
+export default function FormEditNews({ news, onSuccess, onClose })
+{
+  const [ formValues, setFormValues ] = useState({
     content: news.content || "",
     title: news.title || "",
     createdAt: news.createdAt || "",
     updatedAt: news.updatedAt || "",
   });
 
-  const [error, setError] = useState({
+  const [ error, setError ] = useState({
     content: "",
     title: "",
     createdAt: "",
     updatedAt: "",
   });
 
-  const [showImage, setShowImage] = useState(news.imageUrl || null);
-  const [image, setImage] = useState(null);
+  const [ showImage, setShowImage ] = useState(news.imageUrl || null);
+  const [ image, setImage ] = useState(null);
 
   const dispatch = useDispatch();
 
-  const handleChange = (event) => {
+  const handleChange = (event) =>
+  {
     const { name, value } = event.target;
-    setFormValues({ ...formValues, [name]: value });
-    if (value !== "") {
-      setError({ ...error, [name]: "" });
-    } else {
-      setError({ ...error, [name]: `${name} must be not empty` });
+    setFormValues({ ...formValues, [ name ]: value });
+    if (value !== "")
+    {
+      setError({ ...error, [ name ]: "" });
+    } else
+    {
+      setError({ ...error, [ name ]: `${ name } must be not empty` });
     }
   };
 
-  const handleChangeFile = (e) => {
-    setImage(e.target.files[0]);
-    encodeImageFileAsURL(e.target.files[0]);
+  const handleChangeFile = (e) =>
+  {
+    setImage(e.target.files[ 0 ]);
+    encodeImageFileAsURL(e.target.files[ 0 ]);
   };
 
-  const encodeImageFileAsURL = (file) => {
+  const encodeImageFileAsURL = (file) =>
+  {
     var reader = new FileReader();
-    reader.onloadend = function () {
+    reader.onloadend = function ()
+    {
       setShowImage(reader.result);
     };
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) =>
+  {
     e.preventDefault();
     if (
       formValues.content &&
       formValues.title &&
       formValues.createdAt &&
       formValues.updatedAt
-    ) {
+    )
+    {
       const formData = new FormData();
       formData.append("content", formValues.content);
-      if (image) {
+      if (image)
+      {
         formData.append("imageUrl", image);
       }
       formData.append("title", formValues.title);
       formData.append("createdAt", formValues.createdAt);
       formData.append("updatedAt", formValues.updatedAt);
 
-      dispatch(updateNews({ id: news.id, formData })).then((response) => {
-        if (response.error) {
+      dispatch(updateNews({ id: news.id, formData })).then((response) =>
+      {
+        if (response.error)
+        {
           console.error("Error:", response.error);
-        } else {
+        } else
+        {
           onSuccess();
           onClose();
           dispatch(fetchAllNews({ page: 0 }));
         }
       });
-    } else {
-      if (!formValues.content) {
+    } else
+    {
+      if (!formValues.content)
+      {
         setError((prev) => ({ ...prev, content: "content must be not empty" }));
       }
-      if (!formValues.title) {
+      if (!formValues.title)
+      {
         setError((prev) => ({ ...prev, title: "title must be not empty" }));
       }
-      if (!formValues.createdAt) {
+      if (!formValues.createdAt)
+      {
         setError((prev) => ({
           ...prev,
           createdAt: "createdAt must be not empty",
         }));
       }
-      if (!formValues.updatedAt) {
+      if (!formValues.updatedAt)
+      {
         setError((prev) => ({
           ...prev,
           updatedAt: "updatedAt must be not empty",
@@ -116,15 +135,15 @@ export default function FormEditNews({ news, onSuccess, onClose }) {
       <div
         data-state="open"
         className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
-        style={{ pointerEvents: "auto" }}
+        style={ { pointerEvents: "auto" } }
         data-aria-hidden="true"
         aria-hidden="true"
       />
       <div
         role="dialog"
         className="bg-black text-white fixed left-[50%] top-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-7 shadow-lg rounded-2xl md:w-full max-w-xl"
-        tabIndex={-1}
-        style={{ pointerEvents: "auto" }}
+        tabIndex={ -1 }
+        style={ { pointerEvents: "auto" } }
       >
         <div className="text-white flex flex-col space-y-1.5 text-center sm:text-left">
           <h2 className="text-2xl font-bold leading-none tracking-tight">
@@ -132,87 +151,87 @@ export default function FormEditNews({ news, onSuccess, onClose }) {
           </h2>
         </div>
         <div className="overflow-auto">
-          <form className="overflow-y-auto" onSubmit={handleSubmit}>
+          <form className="overflow-y-auto" onSubmit={ handleSubmit }>
             <div className="space-y-4">
               <TextField
                 className=" bg-slate-300"
-                error={Boolean(error.title)}
-                helperText={error.title}
-                onChange={handleChange}
+                error={ Boolean(error.title) }
+                helperText={ error.title }
+                onChange={ handleChange }
                 size="small"
                 name="title"
                 label="Title"
                 variant="outlined"
                 fullWidth
-                value={formValues.title}
+                value={ formValues.title }
               />
               <TextField
                 className=" bg-slate-300"
-                error={Boolean(error.content)}
-                helperText={error.content}
-                onChange={handleChange}
+                error={ Boolean(error.content) }
+                helperText={ error.content }
+                onChange={ handleChange }
                 size="small"
                 name="content"
                 label="Content"
                 variant="outlined"
                 fullWidth
                 multiline
-                rows={4}
-                value={formValues.content}
+                rows={ 4 }
+                value={ formValues.content }
               />
               <Button
                 className="bg-slate-300"
                 component="label"
                 variant="contained"
-                startIcon={<CloudUploadIcon />}
+                startIcon={ <CloudUploadIcon /> }
                 fullWidth
               >
                 Upload file
-                <VisuallyHiddenInput type="file" onChange={handleChangeFile} />
+                <VisuallyHiddenInput type="file" onChange={ handleChangeFile } />
               </Button>
-              {showImage && (
+              { showImage && (
                 <img
-                  src={showImage}
+                  src={ showImage }
                   alt="uploaded"
-                  width={100}
-                  max-height={50}
+                  width={ 100 }
+                  max-height={ 50 }
                 />
-              )}
+              ) }
               <TextField
                 className="bg-slate-300"
-                error={Boolean(error.createdAt)}
-                helperText={error.createdAt}
-                onChange={handleChange}
+                error={ Boolean(error.createdAt) }
+                helperText={ error.createdAt }
+                onChange={ handleChange }
                 size="small"
                 name="createdAt"
                 label="Created At"
                 type="date"
                 variant="outlined"
                 fullWidth
-                InputLabelProps={{
+                InputLabelProps={ {
                   shrink: true,
-                }}
-                value={formValues.createdAt}
+                } }
+                value={ formValues.createdAt }
               />
               <TextField
                 className="bg-slate-300"
-                error={Boolean(error.updatedAt)}
-                helperText={error.updatedAt}
-                onChange={handleChange}
+                error={ Boolean(error.updatedAt) }
+                helperText={ error.updatedAt }
+                onChange={ handleChange }
                 size="small"
                 name="updatedAt"
                 label="Updated At"
                 type="date"
                 variant="outlined"
                 fullWidth
-                InputLabelProps={{
+                InputLabelProps={ {
                   shrink: true,
-                }}
-                value={formValues.updatedAt}
+                } }
+                value={ formValues.updatedAt }
               />
             </div>
             <div className="mt-6 flex items-center justify-end space-x-2">
-              <Button onClick={onClose} variant="contained" color="secondary">
+              <Button onClick={ onClose } variant="contained" color="secondary">
                 Cancel
               </Button>
               <Button type="submit" variant="contained" color="primary">
@@ -225,7 +244,7 @@ export default function FormEditNews({ news, onSuccess, onClose }) {
           type="button"
           className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
           aria-label="Close"
-          onClick={onClose}
+          onClick={ onClose }
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
