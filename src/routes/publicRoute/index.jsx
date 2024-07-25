@@ -6,6 +6,8 @@ import SearchMovie from "../../pages/client/searchMovie/SearchMovie";
 import AllMoviePable from "../../pages/client/allMoviePageable/AllMoviePageable";
 import BookingHistory from "../../pages/client/bookingHistory/BookingHistory";
 import NewsList from "../../pages/client/news/NewsList";
+import NewsCardItem from "../../pages/client/news/NewsCardItem";
+import NewsDetailPage from "../../pages/client/news/NewsDetailPage";
 
 
 const Home = React.lazy(() => import("../../pages/client/Home"));
@@ -70,8 +72,11 @@ const publicRoutes = [
   {
     path: "/news",
     element: <NewsList />
+  },
+  {
+    path: "news/:newsId",
+    element: <NewsDetailPage />
   }
-
 ];
 
 export default publicRoutes;
