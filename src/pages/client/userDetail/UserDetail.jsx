@@ -5,6 +5,7 @@ import Header from "../../../layouts/client/header";
 import Footer from "../../../layouts/client/footer";
 import { updateUserDetails } from "../../../services/clientServices/userDetailServices";
 import Cookies from "js-cookie";
+import ChangePasswordForm from "../../../components/clientComponents/changePassword/ChangePasswordForm";
 
 export default function UserDetail() {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ export default function UserDetail() {
     address: "",
     email: "",
   });
+  const [isChangePasswordOpen, setChangePasswordOpen] = useState(false);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user")) || null;
@@ -56,9 +58,7 @@ export default function UserDetail() {
         if (result.payload) {
           const updatedUser = {
             ...JSON.parse(localStorage.getItem("user")),
-            fullName: updateData.fullName,
-            phone: updateData.phone,
-            address: updateData.address,
+            ...result.payload,
           };
           localStorage.setItem("user", JSON.stringify(updatedUser));
 
@@ -168,6 +168,7 @@ export default function UserDetail() {
                   <button
                     className="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-transparent hover:bg-blue-500 hover:text-accent-foreground h-9 rounded-md px-3"
                     type="button"
+                    onClick={() => setChangePasswordOpen(true)}
                   >
                     Đổi mật khẩu
                   </button>
@@ -183,6 +184,9 @@ export default function UserDetail() {
           </div>
         </div>
       </div>
+      {isChangePasswordOpen && (
+        <ChangePasswordForm onClose={() => setChangePasswordOpen(false)} />
+      )}
       <Footer />
     </>
   );
