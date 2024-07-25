@@ -1,15 +1,26 @@
-import { Card } from "antd";
-import Meta from "antd/es/card/Meta";
+import { Card, CardActionArea, CardContent, CardMedia } from "@mui/material";
+import { Typography } from "antd";
 
-function AllMovieCardItem()
+function AllMovieCardItem({ movie })
 {
     return (
-        <Card className="border border-slate-500"
-            hoverable
-            style={ { width: 240 } }
-            cover={ <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" /> }
-        >
-            <Meta title="Tên phim" className="text-center" />
+        <Card sx={ { maxWidth: 345, minHeight: 300 } }>
+            <CardActionArea>
+                <CardMedia
+                    component="img"
+                    className="max-h-[400px]"
+                    image={ movie.posterUrl }
+                    alt={ movie.title }
+                />
+                <CardContent>
+                    <Typography gutterBottom variant="h5" component="div" className="text-2xl font-bold">
+                        { movie.title }
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" className="text-slate-500 font-semibold">
+                        { movie.description }
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
         </Card>
     );
 }

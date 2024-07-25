@@ -21,6 +21,8 @@ import clientReviewSlice from "./clientSlices/clientReviewSlice";
 import newsSlice from "./adminSlices/newsSlice";
 import ticketSlice from "./adminSlices/ticketPriceSlice";
 import ticketPriceSlice from "./adminSlices/ticketPriceSlice";
+import clientBookingSlice from "./clientSlices/clientBookingSlice";
+import clientPaymentSlice from "./clientSlices/clientPaymentSlice";
 import userDetailsSlice from "./clientSlices/userDetailsSlice";
 import forgetPasswordSlice from "./generalSlices/forgetPasswordSlice";
 
@@ -42,6 +44,8 @@ const rootReducers = combineReducers({
   clientBanner: clientBannerSlice,
   clientMovie: clientMovieSlice,
   clientReview: clientReviewSlice,
+  clientBooking: clientBookingSlice,
+  clientPayment: clientPaymentSlice,
   userDetail: userDetailsSlice,
   forgetPassword: forgetPasswordSlice,
 });

@@ -12,7 +12,7 @@ export const fetchAllCountries = createAsyncThunk("country/fetchAllCountries",
 export const fetchAllGenres = createAsyncThunk("genre/fetchAllGenres",
     async () =>
     {
-        const response = await BASE_URL[HTTP_METHOD.GET]("/genres");
+        const response = await BASE_URL[ HTTP_METHOD.GET ]("/genres");
         return response.data;
     }
 );
@@ -20,6 +20,20 @@ export const fetchAllUserAdvices = createAsyncThunk("userAdvices/fetchAllUserAdv
     async () =>
     {
         const response = await BASE_URL[ HTTP_METHOD.GET ]("useradvices");
+        return response;
+    }
+);
+export const fetchClientNews = createAsyncThunk("news/fetchClientNews",
+    async (page) =>
+    {
+        const response = await BASE_URL[ HTTP_METHOD.GET ](`news?page=${ page - 1 }`);
+        return response;
+    }
+);
+export const fetchNewsById = createAsyncThunk("news/fetchNewsById",
+    async (newsId) =>
+    {
+        const response = await BASE_URL[ HTTP_METHOD.GET ](`news/${ newsId }`);
         return response;
     }
 );
