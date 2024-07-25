@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 
 export const updateUserDetails = createAsyncThunk(
   "userDetails/updateUserDetails",
-  async ({ formData }) => {
+  async ({ formData }, { rejectWithValue }) => {
     try {
       const token = Cookies.get("token");
       if (!token) {
@@ -35,6 +35,8 @@ export const updateUserDetails = createAsyncThunk(
         message: "Thất bại",
         description: "Cập nhật thông tin cá nhân thất bại.",
       });
+
+      return rejectWithValue(err.response.data);
     }
   }
 );
