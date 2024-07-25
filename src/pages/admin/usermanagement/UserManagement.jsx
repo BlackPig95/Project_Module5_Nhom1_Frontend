@@ -21,6 +21,7 @@ import {
 } from "../../../services/adminServices/userServices";
 import "./index.scss";
 import Button from "@mui/material/Button";
+import { formatDate } from "../../../util";
 
 export default function UserManagement() {
   const dispatch = useDispatch();
@@ -88,6 +89,8 @@ export default function UserManagement() {
                   <TableCell align="center">FullName</TableCell>
                   <TableCell align="center">Email</TableCell>
                   <TableCell align="center">Phone</TableCell>
+                  <TableCell align="center">Address</TableCell>
+                  <TableCell align="center">Birth Date</TableCell>
                   <TableCell align="center">Status</TableCell>
                   <TableCell align="center">Chức năng</TableCell>
                 </TableRow>
@@ -102,6 +105,11 @@ export default function UserManagement() {
                     <TableCell align="center">{user.fullName}</TableCell>
                     <TableCell align="center">{user.email}</TableCell>
                     <TableCell align="center">{user.phone}</TableCell>
+                    <TableCell align="center">{user.address}</TableCell>
+                    <TableCell align="center">
+                      {formatDate(user.birthDate)}
+                    </TableCell>{" "}
+                    {/* Sử dụng hàm formatDate */}
                     <TableCell align="center">
                       {user.status ? "Active" : "Inactive"}
                     </TableCell>
