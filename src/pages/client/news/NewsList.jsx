@@ -4,6 +4,7 @@ import Header from "../../../layouts/client/header";
 import NewsCardItem from "./NewsCardItem";
 import { fetchClientNews } from "../../../services/generalServices";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function NewsList()
 {
@@ -11,6 +12,7 @@ function NewsList()
     const newsData = useSelector(state => state.news);
     const newsList = newsData?.data?.data?.data;
     const [ page, setPage ] = useState(1);
+    const navigate = useNavigate();
     useEffect(() =>
     {
         dispatch(fetchClientNews(page));
@@ -23,17 +25,23 @@ function NewsList()
         }
         setPage(prev => prev + toAdd);
     };
+    const handleSeeNews = (newsId) =>
+    {
+        navigate(`../news/${ newsId }`, { replace: true });
+    };
     return (
         <div className="bg-[#10141B] text-white">
             <Header />
-            { console.log(page) }
             <div className="p-20">
                 <div className=" gap-5 bg-[#10141B] text-white">
                     <h3 className="text-2xl font-bold mb-4 xl:mb-10 text-center">Tin tức</h3>
                     <div className="grid grid-cols-4 gap-6">
                         { newsList?.content?.map(n =>
                         {
-                            return (<NewsCardItem key={ n.id } news={ n } />);
+                            return (
+                                <button onClick={ () => handleSeeNews(n.id) }>
+                                    <NewsCardItem key={ n.id } news={ n } />
+                                </button>);
                         }
                         ) }
                     </div>

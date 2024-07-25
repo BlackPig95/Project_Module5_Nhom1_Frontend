@@ -30,3 +30,10 @@ export const fetchClientNews = createAsyncThunk("news/fetchClientNews",
         return response;
     }
 );
+export const fetchNewsById = createAsyncThunk("news/fetchNewsById",
+    async (newsId) =>
+    {
+        const response = await BASE_URL[ HTTP_METHOD.GET ](`news/${ newsId }`);
+        return response;
+    }
+);

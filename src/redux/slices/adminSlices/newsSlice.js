@@ -8,7 +8,7 @@ import
   fetchAllNews,
   updateNews,
 } from "../../../services/adminServices/newsServices";
-import { fetchClientNews } from "../../../services/generalServices";
+import { fetchClientNews, fetchNewsById } from "../../../services/generalServices";
 
 const newsSlice = createSlice({
   name: "news",
@@ -83,6 +83,20 @@ const newsSlice = createSlice({
       state.data = action.payload;
     });
     builder.addCase(fetchClientNews.rejected, (state, action) =>
+    {
+      state.loading = LOAD_STATUS.REJECTED;
+      state.error = action.payload || action.error.message;
+    });
+    builder.addCase(fetchNewsById.pending, (state) =>
+    {
+      state.loading = LOAD_STATUS.PENDING;
+    });
+    builder.addCase(fetchNewsById.fulfilled, (state, action) =>
+    {
+      state.loading = LOAD_STATUS.FULLFILLED;
+      state.data = action.payload;
+    });
+    builder.addCase(fetchNewsById.rejected, (state, action) =>
     {
       state.loading = LOAD_STATUS.REJECTED;
       state.error = action.payload || action.error.message;

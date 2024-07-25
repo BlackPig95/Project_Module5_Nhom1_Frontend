@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import { formatDate } from "../../../util/formatDate";
 
 function NewsCardItem({ news })
