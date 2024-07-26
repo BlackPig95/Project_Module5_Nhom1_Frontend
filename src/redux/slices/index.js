@@ -25,6 +25,7 @@ import clientBookingSlice from "./clientSlices/clientBookingSlice";
 import clientPaymentSlice from "./clientSlices/clientPaymentSlice";
 import userDetailsSlice from "./clientSlices/userDetailsSlice";
 import forgetPasswordSlice from "./generalSlices/forgetPasswordSlice";
+// import voucherSlice from "./generalSlices/voucherSlice";
 
 const rootReducers = combineReducers({
   movie: movieSlice,
@@ -48,5 +49,6 @@ const rootReducers = combineReducers({
   clientPayment: clientPaymentSlice,
   userDetail: userDetailsSlice,
   forgetPassword: forgetPasswordSlice,
+  // voucher: voucherSlice,
 });
 export default rootReducers;

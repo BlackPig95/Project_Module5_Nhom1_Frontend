@@ -37,13 +37,13 @@ export const createDiscount = createAsyncThunk(
       {
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
         },
       }
     );
     return response.data;
   }
 );
-
 export const updateDiscount = createAsyncThunk(
   "discount/updateDiscount",
   async ({ id, discountData }) => {

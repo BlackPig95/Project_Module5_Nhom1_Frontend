@@ -33,7 +33,7 @@ export default function Header() {
     }
     const user = JSON.parse(localStorage.getItem("user"));
     setUserData(user);
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     if (auth?.data) {
@@ -102,6 +102,20 @@ export default function Header() {
     boxShadow: "none",
   };
 
+  const menu = <Menu items={menuItems} />;
+
+  const dropdownRender = (menu) => (
+    <div style={contentStyle}>
+      {React.cloneElement(menu, { style: menuStyle })}
+      <Divider style={{ margin: 0 }} />
+      <Space style={{ padding: 8 }}>
+        <Button type="primary" onClick={handleLogout}>
+          Đăng xuất
+        </Button>
+      </Space>
+    </div>
+  );
+
   return (
     <header className="header px-4 h-20 flex flex-row justify-between">
       <div className="header-logo">
@@ -138,20 +152,7 @@ export default function Header() {
       </nav>
       <div className="header-actions">
         {Cookies.get("token") && userData ? (
-          <Dropdown
-            overlay={<Menu items={menuItems} />}
-            dropdownRender={(menu) => (
-              <div style={contentStyle}>
-                {React.cloneElement(menu, { style: menuStyle })}
-                <Divider style={{ margin: 0 }} />
-                <Space style={{ padding: 8 }}>
-                  <Button type="primary" onClick={handleLogout}>
-                    Đăng xuất
-                  </Button>
-                </Space>
-              </div>
-            )}
-          >
+          <Dropdown menu={{ items: menuItems }} dropdownRender={dropdownRender}>
             <a onClick={(e) => e.preventDefault()}>
               <Space className="text-white">
                 <UserOutlined className="text-white" />

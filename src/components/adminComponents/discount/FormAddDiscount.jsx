@@ -1,9 +1,24 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { Button, TextField } from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { styled } from "@mui/material/styles";
 import {
   createDiscount,
   fetchAllDiscounts,
 } from "../../../services/adminServices/discountServices";
+
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
 
 export default function FormAddDiscount({ onSuccess, onClose }) {
   const [formValues, setFormValues] = useState({
@@ -15,23 +30,101 @@ export default function FormAddDiscount({ onSuccess, onClose }) {
     validTo: "",
   });
 
+  const [error, setError] = useState({
+    code: "",
+    description: "",
+    discountPercentage: "",
+    validFrom: "",
+    validTo: "",
+  });
+
+  const [showImage, setShowImage] = useState(null);
+  const [image, setImage] = useState(null);
+
   const dispatch = useDispatch();
 
   const handleChange = (event) => {
-    const { name, value, type, checked } = event.target;
-    setFormValues({
-      ...formValues,
-      [name]: type === "checkbox" ? checked : value,
-    });
+    const { name, value } = event.target;
+    setFormValues({ ...formValues, [name]: value });
+    if (value !== "") {
+      setError({ ...error, [name]: "" });
+    } else {
+      setError({ ...error, [name]: `${name} must be not empty` });
+    }
+  };
+
+  const handleChangeFile = (e) => {
+    setImage(e.target.files[0]);
+    encodeImageFileAsURL(e.target.files[0]);
+  };
+
+  const encodeImageFileAsURL = (file) => {
+    var reader = new FileReader();
+    reader.onloadend = function () {
+      console.log("RESULT", reader.result);
+      setShowImage(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(createDiscount(formValues)).then(() => {
-      onSuccess();
-      onClose();
-      dispatch(fetchAllDiscounts({ page: 0 }));
-    });
+    if (
+      formValues.code &&
+      formValues.description &&
+      formValues.discountPercentage &&
+      formValues.validFrom &&
+      formValues.validTo
+    ) {
+      const formData = new FormData();
+      formData.append("code", formValues.code);
+      formData.append("description", formValues.description);
+      formData.append("discountPercentage", formValues.discountPercentage);
+      formData.append("isUsed", formValues.isUsed);
+      formData.append("validFrom", formValues.validFrom);
+      formData.append("validTo", formValues.validTo);
+      if (image) {
+        formData.append("imageUrl", image);
+      }
+
+      dispatch(createDiscount(formData)).then((response) => {
+        if (response.error) {
+          console.error("Error:", response.error);
+        } else {
+          onSuccess();
+          onClose();
+          dispatch(fetchAllDiscounts({ page: 0 }));
+        }
+      });
+    } else {
+      if (!formValues.code) {
+        setError((prev) => ({ ...prev, code: "code must be not empty" }));
+      }
+      if (!formValues.description) {
+        setError((prev) => ({
+          ...prev,
+          description: "description must be not empty",
+        }));
+      }
+      if (!formValues.discountPercentage) {
+        setError((prev) => ({
+          ...prev,
+          discountPercentage: "discountPercentage must be not empty",
+        }));
+      }
+      if (!formValues.validFrom) {
+        setError((prev) => ({
+          ...prev,
+          validFrom: "validFrom must be not empty",
+        }));
+      }
+      if (!formValues.validTo) {
+        setError((prev) => ({
+          ...prev,
+          validTo: "validTo must be not empty",
+        }));
+      }
+    }
   };
 
   return (
@@ -57,99 +150,88 @@ export default function FormAddDiscount({ onSuccess, onClose }) {
         <div className="overflow-auto">
           <form className="overflow-y-auto" onSubmit={handleSubmit}>
             <div className="space-y-4">
-              <div className="space-y-2 w-full">
-                <label
-                  className="text-sm font-medium leading-none"
-                  htmlFor="code"
-                >
-                  Mã Code
-                </label>
-                <input
-                  className="text-black flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base"
-                  placeholder="Nhập mã code"
-                  id="code"
-                  aria-describedby="code-description"
-                  aria-invalid="false"
-                  value={formValues.code}
-                  name="code"
-                  onChange={handleChange}
+              <TextField
+                className="bg-slate-300"
+                error={Boolean(error.code)}
+                helperText={error.code}
+                onChange={handleChange}
+                size="small"
+                name="code"
+                label="Mã Code"
+                variant="outlined"
+                fullWidth
+              />
+              <TextField
+                className="bg-slate-300"
+                error={Boolean(error.description)}
+                helperText={error.description}
+                onChange={handleChange}
+                size="small"
+                name="description"
+                label="Miêu tả"
+                variant="outlined"
+                fullWidth
+              />
+              <TextField
+                className="bg-slate-300"
+                error={Boolean(error.discountPercentage)}
+                helperText={error.discountPercentage}
+                onChange={handleChange}
+                size="small"
+                name="discountPercentage"
+                label="Chiết khấu"
+                type="number"
+                variant="outlined"
+                fullWidth
+              />
+              <TextField
+                className="bg-slate-300"
+                error={Boolean(error.validFrom)}
+                helperText={error.validFrom}
+                onChange={handleChange}
+                size="small"
+                name="validFrom"
+                label="Ngày bắt đầu"
+                type="date"
+                variant="outlined"
+                fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <TextField
+                className="bg-slate-300"
+                error={Boolean(error.validTo)}
+                helperText={error.validTo}
+                onChange={handleChange}
+                size="small"
+                name="validTo"
+                label="Ngày kết thúc"
+                type="date"
+                variant="outlined"
+                fullWidth
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <Button
+                className="bg-slate-300"
+                component="label"
+                variant="contained"
+                startIcon={<CloudUploadIcon />}
+                fullWidth
+              >
+                Upload file
+                <VisuallyHiddenInput type="file" onChange={handleChangeFile} />
+              </Button>
+              {showImage && (
+                <img
+                  src={showImage}
+                  alt="uploaded"
+                  width={100}
+                  max-height={50}
                 />
-              </div>
-              <div className="space-y-2 w-full">
-                <label
-                  className="text-sm font-medium leading-none"
-                  htmlFor="description"
-                >
-                  Miêu tả
-                </label>
-                <input
-                  className="text-black flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base"
-                  placeholder="Nhập miêu tả"
-                  autoComplete="off"
-                  id="description"
-                  aria-describedby="description-description"
-                  aria-invalid="false"
-                  value={formValues.description}
-                  name="description"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="space-y-2 w-full">
-                <label
-                  className="text-sm font-medium leading-none"
-                  htmlFor="discountPercentage"
-                >
-                  Chiết khấu
-                </label>
-                <input
-                  className="text-black flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base"
-                  placeholder="Nhập chiết khấu"
-                  autoComplete="off"
-                  id="discountPercentage"
-                  aria-describedby="discountPercentage-description"
-                  aria-invalid="false"
-                  type="number"
-                  value={formValues.discountPercentage}
-                  name="discountPercentage"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="space-y-2 w-full">
-                <label
-                  className="text-sm font-medium leading-none"
-                  htmlFor="validFrom"
-                >
-                  Ngày bắt đầu
-                </label>
-                <input
-                  className="text-black flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base"
-                  id="validFrom"
-                  aria-describedby="validFrom-description"
-                  aria-invalid="false"
-                  type="date"
-                  value={formValues.validFrom}
-                  name="validFrom"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="space-y-2 w-full">
-                <label
-                  className="text-sm font-medium leading-none"
-                  htmlFor="validTo"
-                >
-                  Ngày kết thúc
-                </label>
-                <input
-                  className="text-black flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base"
-                  id="validTo"
-                  aria-describedby="validTo-description"
-                  aria-invalid="false"
-                  type="date"
-                  value={formValues.validTo}
-                  name="validTo"
-                  onChange={handleChange}
-                />
-              </div>
+              )}
               <div className="space-y-2 w-full">
                 <label
                   className="text-sm font-medium leading-none"
@@ -168,12 +250,14 @@ export default function FormAddDiscount({ onSuccess, onClose }) {
                   onChange={handleChange}
                 />
               </div>
-              <button
-                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-                type="submit"
-              >
-                Thêm
-              </button>
+            </div>
+            <div className="mt-6 flex items-center justify-end space-x-2">
+              <Button onClick={onClose} variant="contained" color="secondary">
+                Cancel
+              </Button>
+              <Button type="submit" variant="contained" color="primary">
+                Save
+              </Button>
             </div>
           </form>
         </div>

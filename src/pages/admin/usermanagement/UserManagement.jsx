@@ -90,7 +90,7 @@ export default function UserManagement() {
                   <TableCell align="center">Email</TableCell>
                   <TableCell align="center">Phone</TableCell>
                   <TableCell align="center">Address</TableCell>
-                  <TableCell align="center">Birth Date</TableCell>
+                  {/* <TableCell align="center">Birth Date</TableCell> */}
                   <TableCell align="center">Status</TableCell>
                   <TableCell align="center">Chức năng</TableCell>
                 </TableRow>
@@ -106,9 +106,9 @@ export default function UserManagement() {
                     <TableCell align="center">{user.email}</TableCell>
                     <TableCell align="center">{user.phone}</TableCell>
                     <TableCell align="center">{user.address}</TableCell>
-                    <TableCell align="center">
+                    {/* <TableCell align="center">
                       {formatDate(user.birthDate)}
-                    </TableCell>{" "}
+                    </TableCell>{" "} */}
                     {/* Sử dụng hàm formatDate */}
                     <TableCell align="center">
                       {user.status ? "Active" : "Inactive"}

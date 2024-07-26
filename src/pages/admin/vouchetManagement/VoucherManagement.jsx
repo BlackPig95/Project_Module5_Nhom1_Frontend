@@ -23,6 +23,7 @@ import FormEditDiscount from "../../../components/adminComponents/discount/FormE
 export default function VoucherManagement() {
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.discount);
+  console.log(data);
   const [page, setPage] = useState(1);
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
@@ -30,7 +31,7 @@ export default function VoucherManagement() {
 
   useEffect(() => {
     dispatch(fetchAllDiscounts({ page }));
-  }, [dispatch, page]);
+  }, [page]);
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -90,6 +91,7 @@ export default function VoucherManagement() {
                   <TableCell align="center">Mã Code</TableCell>
                   <TableCell align="center">Miêu tả</TableCell>
                   <TableCell align="center">Chiết khấu</TableCell>
+                  <TableCell align="center">ImageUrl</TableCell>
                   <TableCell align="center">Sử dụng</TableCell>
                   <TableCell align="center">Bắt đầu</TableCell>
                   <TableCell align="center">Kết thúc</TableCell>
@@ -106,6 +108,9 @@ export default function VoucherManagement() {
                     <TableCell align="center">{discount.description}</TableCell>
                     <TableCell align="center">
                       {discount.discountPercentage}%
+                    </TableCell>
+                    <TableCell align="center">
+                      <img src={discount.imageUrl} alt="news" width="100" />
                     </TableCell>
                     <TableCell align="center">
                       {discount.isUsed ? "Yes" : "No"}

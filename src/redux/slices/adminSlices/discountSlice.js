@@ -6,6 +6,7 @@ import {
   updateDiscount,
   deleteDiscount,
 } from "../../../services/adminServices/discountServices";
+import { fetchAllUserDiscount } from "../../../services/generalServices";
 
 const discountSlice = createSlice({
   name: "discount",
@@ -56,6 +57,14 @@ const discountSlice = createSlice({
       );
     });
     builder.addCase(deleteDiscount.rejected, (state, action) => {
+      state.loading = LOAD_STATUS.REJECTED;
+      state.error = action.payload || action.error.message;
+    });
+    builder.addCase(fetchAllUserDiscount.fulfilled, (state, action) => {
+      state.loading = LOAD_STATUS.FULLFILLED;
+      state.data = action.payload;
+    });
+    builder.addCase(fetchAllUserDiscount.rejected, (state, action) => {
       state.loading = LOAD_STATUS.REJECTED;
       state.error = action.payload || action.error.message;
     });
