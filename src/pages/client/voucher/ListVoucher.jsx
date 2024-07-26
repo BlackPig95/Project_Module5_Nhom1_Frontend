@@ -4,6 +4,7 @@ import Footer from "../../../layouts/client/footer";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllUserDiscount } from "../../../services/generalServices";
 import { useNavigate } from "react-router-dom";
+import { formatDate } from "../../../util/formatDate";
 
 export default function ListVoucher() {
   const dispatch = useDispatch();
@@ -24,9 +25,12 @@ export default function ListVoucher() {
     setPage((prev) => prev + toAdd);
   };
 
-  const handleSeeVoucher = (voucherId) => {
-    navigate(`../voucher/${voucherId}`, { replace: true });
+  const handleSeeVoucher = (discountId) => {
+    navigate(`../discount/${discountId}`, { replace: true });
   };
+
+  //Lọc các voucher sử dụng
+  const filteredVoucherList = voucherList?.filter((voucher) => voucher.isUsed);
 
   return (
     <>
@@ -37,7 +41,7 @@ export default function ListVoucher() {
             Khuyến mãi
           </h3>
           <div className="grid grid-cols-1 xl:grid-cols-4 gap-5">
-            {voucherList?.map((voucher) => (
+            {filteredVoucherList?.map((voucher) => (
               <button
                 onClick={() => handleSeeVoucher(voucher.id)}
                 key={voucher.id}
@@ -63,9 +67,12 @@ export default function ListVoucher() {
                   </div>
                   <div className="p-4">
                     <p className="text-sm text-gray-400 mb-2">
-                      {voucher.validFrom}
+                      {formatDate(voucher.validFrom)} đến{" "}
+                      {formatDate(voucher.validTo)}
                     </p>
-                    <h3 className="font-bold">{voucher.description}</h3>
+                    <h3 className="text-white font-bold">
+                      {voucher.description}
+                    </h3>
                   </div>
                 </div>
               </button>

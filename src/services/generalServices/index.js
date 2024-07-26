@@ -47,3 +47,11 @@ export const fetchAllUserDiscount = createAsyncThunk(
     return response;
   }
 );
+
+export const fetchDiscountId = createAsyncThunk(
+  "discount/fetchDiscountId",
+  async (discountId) => {
+    const response = await BASE_URL[HTTP_METHOD.GET](`discount/${discountId}`);
+    return response;
+  }
+);
