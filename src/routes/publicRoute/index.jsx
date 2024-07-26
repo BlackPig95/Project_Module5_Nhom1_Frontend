@@ -11,8 +11,7 @@ import BookingHistory from "../../pages/client/bookingHistory/BookingHistory";
 import NewsList from "../../pages/client/news/NewsList";
 import NewsCardItem from "../../pages/client/news/NewsCardItem";
 import NewsDetailPage from "../../pages/client/news/NewsDetailPage";
-
-
+import ListVoucher from "../../pages/client/listVoucher/ListVoucher";
 
 const Home = React.lazy(() => import("../../pages/client/Home"));
 // import Home from "../../pages/client/Home";
@@ -55,6 +54,10 @@ const publicRoutes = [
     path: "/change-password",
     element: <ChangePassword />,
   },
+  {
+    path: "/list-voucher",
+    element: <ListVoucher />,
+  },
 
   {
     path: "*",
@@ -71,20 +74,20 @@ const publicRoutes = [
   },
   {
     path: "/movie-all",
-    element: <AllMoviePable />
+    element: <AllMoviePable />,
   },
   {
     path: "/booking-history",
-    element: <BookingHistory />
+    element: <BookingHistory />,
   },
   {
     path: "/news",
-    element: <NewsList />
+    element: <NewsList />,
   },
   {
     path: "news/:newsId",
-    element: <NewsDetailPage />
-  }
+    element: <NewsDetailPage />,
+  },
 ];
 
 export default publicRoutes;

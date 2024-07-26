@@ -21,10 +21,19 @@ const ForgotPasswordForm = ({ closeForm }) => {
     (state) => state.forgetPassword
   );
 
-  const handleSendOtp = (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault();
-    dispatch(sendOtp(email));
-    setStep(2);
+    const resultAction = await dispatch(sendOtp(email));
+    console.log(resultAction);
+    if (sendOtp.fulfilled.match(resultAction)) {
+      setStep(2);
+    } else {
+      notification.error({
+        message: "Email không xác thực",
+        description:
+          resultAction.payload || "Email không tồn tại trong hệ thống.",
+      });
+    }
   };
 
   const handleVerifyOtp = async (e) => {
@@ -35,12 +44,13 @@ const ForgotPasswordForm = ({ closeForm }) => {
     } else {
       notification.error({
         message: "Xác thực OTP không thành công",
-        description: "OTP không chính xác. Vui lòng thử lại.",
+        description:
+          resultAction.payload || "OTP không chính xác. Vui lòng thử lại.",
       });
     }
   };
 
-  const handleChangePassword = (e) => {
+  const handleChangePassword = async (e) => {
     e.preventDefault();
     if (passwords.newPassword !== passwords.confirmNewPassword) {
       notification.error({
@@ -49,8 +59,19 @@ const ForgotPasswordForm = ({ closeForm }) => {
       });
       return;
     }
-    dispatch(changePassword({ passwords, email }));
-    closeForm();
+    const resultAction = await dispatch(changePassword({ passwords, email }));
+    if (changePassword.fulfilled.match(resultAction)) {
+      notification.success({
+        message: "Đổi mật khẩu thành công",
+        description: "Mật khẩu của bạn đã được thay đổi thành công.",
+      });
+      closeForm();
+    } else {
+      notification.error({
+        message: "Đổi mật khẩu không thành công",
+        description: resultAction.payload || "Có lỗi xảy ra. Vui lòng thử lại.",
+      });
+    }
   };
 
   return (
@@ -75,7 +96,7 @@ const ForgotPasswordForm = ({ closeForm }) => {
             <button type="submit" disabled={loading === "pending"}>
               Gửi mã OTP
             </button>
-            {error && <p className="error">{error.message}</p>}
+            {error && <p className="error">{error}</p>}
             {successMessage && <p className="success">{successMessage}</p>}
           </form>
         )}
@@ -95,7 +116,7 @@ const ForgotPasswordForm = ({ closeForm }) => {
             <button type="submit" disabled={loading === "pending"}>
               Xác nhận OTP
             </button>
-            {error && <p className="error">{error.message}</p>}
+            {error && <p className="error">{error}</p>}
             {successMessage && <p className="success">{successMessage}</p>}
           </form>
         )}
@@ -135,7 +156,7 @@ const ForgotPasswordForm = ({ closeForm }) => {
             <button type="submit" disabled={loading === "pending"}>
               Đổi mật khẩu
             </button>
-            {error && <p className="error">{error.message}</p>}
+            {error && <p className="error">{error}</p>}
             {successMessage && <p className="success">{successMessage}</p>}
           </form>
         )}
