@@ -11,7 +11,8 @@ import BookingHistory from "../../pages/client/bookingHistory/BookingHistory";
 import NewsList from "../../pages/client/news/NewsList";
 import NewsCardItem from "../../pages/client/news/NewsCardItem";
 import NewsDetailPage from "../../pages/client/news/NewsDetailPage";
-import ListVoucher from "../../pages/client/listVoucher/ListVoucher";
+import ListVoucher from "../../pages/client/voucher/ListVoucher";
+import VoucherDetail from "../../pages/client/voucher/VoucherDetail";
 
 const Home = React.lazy(() => import("../../pages/client/Home"));
 // import Home from "../../pages/client/Home";
@@ -58,7 +59,10 @@ const publicRoutes = [
     path: "/list-voucher",
     element: <ListVoucher />,
   },
-
+  {
+    path: "discount/:discountId",
+    element: <VoucherDetail />,
+  },
   {
     path: "*",
     element: <PageNotFound />,

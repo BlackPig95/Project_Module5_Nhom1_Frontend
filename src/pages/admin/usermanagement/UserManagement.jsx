@@ -77,7 +77,6 @@ export default function UserManagement() {
           <MenuItem value="DESC">Descending</MenuItem>
         </Select>
       </div>
-      {error && <p>{error}</p>}
       {loading === LOAD_STATUS.FULLFILLED ? (
         <>
           <TableContainer component={Paper}>

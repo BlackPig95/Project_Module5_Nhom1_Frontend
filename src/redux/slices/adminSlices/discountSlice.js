@@ -6,7 +6,10 @@ import {
   updateDiscount,
   deleteDiscount,
 } from "../../../services/adminServices/discountServices";
-import { fetchAllUserDiscount } from "../../../services/generalServices";
+import {
+  fetchAllUserDiscount,
+  fetchDiscountId,
+} from "../../../services/generalServices";
 
 const discountSlice = createSlice({
   name: "discount",
@@ -65,6 +68,17 @@ const discountSlice = createSlice({
       state.data = action.payload;
     });
     builder.addCase(fetchAllUserDiscount.rejected, (state, action) => {
+      state.loading = LOAD_STATUS.REJECTED;
+      state.error = action.payload || action.error.message;
+    });
+    builder.addCase(fetchDiscountId.pending, (state) => {
+      state.loading = LOAD_STATUS.PENDING;
+    });
+    builder.addCase(fetchDiscountId.fulfilled, (state, action) => {
+      state.loading = LOAD_STATUS.FULLFILLED;
+      state.data = action.payload;
+    });
+    builder.addCase(fetchDiscountId.rejected, (state, action) => {
       state.loading = LOAD_STATUS.REJECTED;
       state.error = action.payload || action.error.message;
     });
