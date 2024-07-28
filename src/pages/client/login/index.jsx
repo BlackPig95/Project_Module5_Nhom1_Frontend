@@ -54,7 +54,6 @@ const LoginForm = ({ closeForm, openRegisterForm, openForgotPasswordForm }) => {
     e.preventDefault();
 
     try {
-      // Gọi API đăng nhập tài khoản
       const response = await dispatch(
         login({
           email: user.email,
@@ -62,7 +61,6 @@ const LoginForm = ({ closeForm, openRegisterForm, openForgotPasswordForm }) => {
         })
       ).unwrap();
 
-      console.log(response);
       const roles = response?.roles;
       if (roles && roles.some((role) => role === "ADMIN")) {
         navigate("/admin");
@@ -83,6 +81,7 @@ const LoginForm = ({ closeForm, openRegisterForm, openForgotPasswordForm }) => {
       });
     }
   };
+
   return (
     <>
       <div

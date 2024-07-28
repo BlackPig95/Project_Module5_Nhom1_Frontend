@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { UnorderedListOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Button } from "antd";
 import Cookies from "js-cookie";
 import { logout } from "../../../redux/slices/clientSlices/authSlice";
@@ -10,13 +10,15 @@ import { useNavigate } from "react-router-dom";
 export default function HeaderAdmin() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(() =>
-    JSON.parse(localStorage.getItem("user"))
+    JSON.parse(Cookies.get("userInfo") || null)
   );
   const dispatch = useDispatch();
 
   const handleLogout = () => {
     dispatch(logout());
     Cookies.remove("token");
+    Cookies.remove("userInfo");
+    setUserData(null);
     navigate("/");
   };
 

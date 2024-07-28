@@ -24,16 +24,13 @@ export default function Menu() {
             <UserOutlined />
             <span>QUản lý user</span>
           </NavLink>
-          <NavLink className="link" to="/admin/ticket-management">
-            <PieChartOutlined />
-            <span> Báo cáo</span>
-          </NavLink>
+
           <NavLink className="link" to="/admin/voucher-management">
             <SpotifyOutlined />
             <span>Giảm giá</span>
           </NavLink>
           <NavLink className="link" to="/admin/news-management">
-            <SpotifyOutlined />
+            <PieChartOutlined />
             <span>Tin tức</span>
           </NavLink>
           <NavLink className="link" to="/admin/ticket-price-management">

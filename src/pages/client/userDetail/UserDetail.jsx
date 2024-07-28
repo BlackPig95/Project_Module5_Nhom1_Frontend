@@ -18,7 +18,9 @@ export default function UserDetail() {
   const [isChangePasswordOpen, setChangePasswordOpen] = useState(false);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user")) || null;
+    const user = Cookies.get("userInfo")
+      ? JSON.parse(Cookies.get("userInfo"))
+      : null;
     if (user) {
       setFormData({
         fullName: user.fullName || "",
@@ -57,10 +59,10 @@ export default function UserDetail() {
       .then((result) => {
         if (result.payload) {
           const updatedUser = {
-            ...JSON.parse(localStorage.getItem("user")),
+            ...JSON.parse(Cookies.get("userInfo")),
             ...result.payload,
           };
-          localStorage.setItem("user", JSON.stringify(updatedUser));
+          Cookies.set("userInfo", JSON.stringify(updatedUser), { expires: 1 });
 
           notification.success({
             message: "Thành công",

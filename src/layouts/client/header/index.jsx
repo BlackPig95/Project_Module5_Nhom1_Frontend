@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MenuOutlined, DownOutlined, UserOutlined } from "@ant-design/icons";
 import "./index.scss";
 import RegisterForm from "../../../pages/client/register";
@@ -7,7 +6,7 @@ import LoginForm from "../../../pages/client/login";
 import ForgotPasswordForm from "../../../pages/client/forgotPassword";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Dropdown, Space, Menu, Divider, theme } from "antd";
-import Cookies from "js-cookie"; // Sử dụng js-cookie
+import Cookies from "js-cookie";
 import { logout } from "../../../redux/slices/clientSlices/authSlice";
 import { loadUserFromCookie } from "../../../services/clientServices/authService";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -18,9 +17,10 @@ export default function Header() {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [showForgotPasswordForm, setShowForgotPasswordForm] = useState(false);
-  const [userData, setUserData] = useState(() =>
-    JSON.parse(localStorage.getItem("user"))
-  );
+
+  const [userData, setUserData] = useState(() => {
+    return JSON.parse(Cookies.get("userInfo") || null);
+  });
 
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -28,12 +28,11 @@ export default function Header() {
   useEffect(() => {
     const token = Cookies.get("token");
     if (token) {
-      const parsedToken = token;
-      dispatch(loadUserFromCookie(parsedToken));
+      dispatch(loadUserFromCookie(token));
     }
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(Cookies.get("userInfo") || null);
     setUserData(user);
-  }, []);
+  }, [showLoginForm]);
 
   useEffect(() => {
     if (auth?.data) {
@@ -72,7 +71,7 @@ export default function Header() {
   const handleLogout = () => {
     dispatch(logout());
     Cookies.remove("token");
-    localStorage.removeItem("user");
+    Cookies.remove("userInfo");
     setUserData(null);
     closeForm();
     navigate("/");
@@ -127,7 +126,7 @@ export default function Header() {
       <div className="header-menu-icon" onClick={toggleMenu}>
         <MenuOutlined />
       </div>
-      <nav className={`header-nav ${menuVisible ? "visible" : ""} `}>
+      <nav className={`header-nav ${menuVisible ? "visible" : ""}`}>
         <a href="#" className="nav-item">
           Trang chủ
         </a>

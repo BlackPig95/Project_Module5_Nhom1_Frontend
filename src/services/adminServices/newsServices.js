@@ -12,9 +12,9 @@ export const fetchAllNews = createAsyncThunk(
     }
 
     const response = await BASE_URL[HTTP_METHOD.GET](
-      `/admin/news-management?page=${
-        page - 1
-      }&sortField=${sortField}&sortDirection=${sortDirection}`,
+      `/admin/news-management?page=${page - 1}&sortField=${
+        sortField || "id"
+      }&sortDirection=${sortDirection || "ASC"}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -24,7 +24,6 @@ export const fetchAllNews = createAsyncThunk(
     return response.data;
   }
 );
-
 export const createNews = createAsyncThunk(
   "news/createNews",
   async (newsData) => {

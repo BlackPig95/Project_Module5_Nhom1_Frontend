@@ -1,75 +1,104 @@
-import React from "react";
-import Footer from "../../layouts/client/footer";
-import Header from "../../layouts/client/header";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { notification } from "antd";
+import { changePasswordUser } from "../../services/clientServices/forgetPasswordService";
 
-export default function ChangePassword() {
+export default function ChangePasswordForm({ onClose }) {
+  const dispatch = useDispatch();
+  const [passwords, setPasswords] = useState({
+    newPassword: "",
+    confirmNewPassword: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setPasswords({ ...passwords, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Change password form submitted: ", passwords);
+    if (passwords.newPassword !== passwords.confirmNewPassword) {
+      notification.error({
+        message: "Thất bại",
+        description: "Mật khẩu không khớp.",
+      });
+      return;
+    }
+
+    try {
+      const response = await dispatch(changePasswordUser(passwords)).unwrap();
+      console.log("Password change successful: ", response);
+      notification.success({
+        message: "Thành công",
+        description: "Mật khẩu đã được thay đổi.",
+      });
+      onClose();
+    } catch (error) {
+      console.error("Failed to change password:", error); // Logging error response
+      notification.error({
+        message: "Thất bại",
+        description: "Đổi mật khẩu thất bại.",
+      });
+    }
+  };
+
   return (
-    <>
-      <Header />
-      <div className="bg-black text-white pt-20 xl:pt-28 pb-10 xl:pb-20 px-4 xl:px-0">
-        <div className="mx-auto max-w-7xl">
-          <h3 className="text-2xl font-bold mb-10 text-center">
-            Đổi mật khẩu mới
-          </h3>
-          <div className="w-[500px] mx-auto">
-            <div className="space-y-4">
-              <form autoComplete="off">
-                <div className="mt-5">
-                  <div className="space-y-2">
-                    <label
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      htmlFor=":rc:-form-item"
-                    >
-                      Mật khẩu mới
-                    </label>
-                    <input
-                      className="text-black flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="Mật khẩu mới"
-                      autoComplete="off"
-                      id=":rc:-form-item"
-                      aria-describedby=":rc:-form-item-description"
-                      aria-invalid="false"
-                      type="password"
-                      defaultValue=""
-                      name="NewPassword"
-                    />
-                  </div>
-                </div>
-                <div className="mt-5">
-                  <div className="space-y-2">
-                    <label
-                      className=" text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      htmlFor=":rd:-form-item"
-                    >
-                      Xác nhận mật khẩu mới
-                    </label>
-                    <input
-                      className="text-black flex h-14 w-full rounded-[10px] border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="Xác nhận mật khẩu mới"
-                      autoComplete="off"
-                      id=":rd:-form-item"
-                      aria-describedby=":rd:-form-item-description"
-                      aria-invalid="false"
-                      type="password"
-                      defaultValue=""
-                      name="ConfirmNewPassword"
-                    />
-                  </div>
-                </div>
-                <div className="mt-8 w-full">
-                  <button
-                    className="bg-red-00 inline-flex items-center justify-center rounded-full text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-danger text-destructive-foreground hover:bg-blue-500 h-10 px-8 py-2 w-full"
-                    type="submit"
-                  >
-                    Xác nhận
-                  </button>
-                </div>
-              </form>
-            </div>
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+        <h3 className="text-xl font-semibold mb-4">Đổi mật khẩu</h3>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="newPassword"
+            >
+              Mật khẩu mới
+            </label>
+            <input
+              type="password"
+              id="newPassword"
+              name="newPassword"
+              value={passwords.newPassword}
+              onChange={handleChange}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            />
           </div>
-        </div>
+          <div className="mb-6">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="confirmNewPassword"
+            >
+              Xác nhận mật khẩu mới
+            </label>
+            <input
+              type="password"
+              id="confirmNewPassword"
+              name="confirmNewPassword"
+              value={passwords.confirmNewPassword}
+              onChange={handleChange}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="submit"
+            >
+              Đổi mật khẩu
+            </button>
+            <button
+              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="button"
+              onClick={onClose}
+            >
+              Đóng
+            </button>
+          </div>
+        </form>
       </div>
-      <Footer />
-    </>
+    </div>
   );
 }

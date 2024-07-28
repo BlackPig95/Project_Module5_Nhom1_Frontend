@@ -3,6 +3,7 @@ import {
   sendOtp,
   verifyOtp,
   changePassword,
+  changePasswordUser,
 } from "../../../services/clientServices/forgetPasswordService";
 
 const initialState = {
@@ -61,6 +62,18 @@ const forgetPasswordSlice = createSlice({
       .addCase(changePassword.rejected, (state, action) => {
         state.loading = "rejected";
         state.error = action.payload;
+      })
+      .addCase(changePasswordUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(changePasswordUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(changePasswordUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || action.error.message;
       });
   },
 });
