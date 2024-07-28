@@ -45,3 +45,25 @@ export const changePassword = createAsyncThunk(
     }
   }
 );
+
+export const changePasswordUser = createAsyncThunk(
+  "user/changePassword",
+  async ({ newPassword, confirmNewPassword }) => {
+    const token = Cookies.get("token");
+
+    const response = await axios.post(
+      "/api/v1/user/changePassword",
+      {
+        password: newPassword,
+        repeatPassword: confirmNewPassword,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  }
+);
