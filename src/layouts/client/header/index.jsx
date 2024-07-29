@@ -133,12 +133,12 @@ export default function Header() {
         <a href="#" className="nav-item">
           Lịch chiếu
         </a>
-        <a href="#" className="nav-item">
+        <NavLink to="/news" className="nav-item">
           Tin tức
-        </a>
-        <a href="#" className="nav-item">
+        </NavLink>
+        <NavLink to="/list-voucher" className="nav-item">
           Khuyến mãi
-        </a>
+        </NavLink>
         <a href="#" className="nav-item">
           Giá vé
         </a>
@@ -155,7 +155,7 @@ export default function Header() {
             <a onClick={(e) => e.preventDefault()}>
               <Space className="text-white">
                 <UserOutlined className="text-white" />
-                {userData.fullName}
+                {userData.username}
                 <DownOutlined />
               </Space>
             </a>
