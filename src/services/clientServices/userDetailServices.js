@@ -35,7 +35,6 @@ export const updateUserDetails = createAsyncThunk(
         message: "Thất bại",
         description: "Cập nhật thông tin cá nhân thất bại.",
       });
-
       return rejectWithValue(err.response.data);
     }
   }
